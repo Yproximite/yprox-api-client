@@ -1,0 +1,4 @@
+suites:
+    default:
+        psr4_prefix: Yproximite\Api
+        namespace: Yproximite\Api
