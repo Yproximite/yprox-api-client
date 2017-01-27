@@ -49,7 +49,7 @@ class Client
      *
      * @var bool
      */
-    private $apiTokenFresh;
+    private $apiTokenFresh = true;
 
     /**
      * Client constructor.
@@ -134,13 +134,13 @@ class Client
         try {
             $content = $this->doSendRequest($method, $uri, $body);
         } catch (HttpException $e) {
-            if ($e->getCode() !== 401 || !$this->apiTokenFresh) {
+            if ($e->getCode() === 401 && !$this->apiTokenFresh) {
+                $this->resetApiToken();
+
+                $content = $this->doSendRequest($method, $uri, $body);
+            } else {
                 throw $e;
             }
-
-            $this->resetApiToken();
-
-            $content = $this->doSendRequest($method, $uri, $body);
         }
 
         return $content;
@@ -156,11 +156,13 @@ class Client
      */
     private function doSendRequest(string $method, string $uri, $body, bool $withAuthorization = true): string
     {
-        $request = $this->getMessageFactory()->createRequest($method, $uri, [], $body);
+        $headers = [];
 
         if ($withAuthorization) {
-            $request = $request->withHeader('Authorization', $this->getAuthorizationHeader());
+            $headers['Authorization'] = $this->getAuthorizationHeader();
         }
+
+        $request = $this->getMessageFactory()->createRequest($method, $uri, $headers, $body);
 
         return (string) $this->getHttpClient()->sendRequest($request)->getBody();
     }
@@ -201,17 +203,17 @@ class Client
     {
         if (!is_null($this->apiToken)) {
             $this->apiTokenFresh = false;
+        } else {
+            $data = $this->sendRequest('POST', '/login_check', ['api_key' => $this->apiKey], false);
 
-            return $this->apiToken;
+            if (!is_array($data) || !array_key_exists('token', $data)) {
+                throw new LogicException('Could not retreive a token.');
+            }
+
+            $this->apiToken = (string) $data['token'];
         }
 
-        $data = $this->sendRequest('POST', '/login_check', ['api_key' => $this->apiKey], false);
-
-        if (!is_array($data) || !array_key_exists('token', $data)) {
-            throw new LogicException('Could not retreive a token.');
-        }
-
-        return (string) $data['token'];
+        return $this->apiToken;
     }
 
     private function resetApiToken()
