@@ -15,7 +15,7 @@ use Yproximite\Api\Exception\InvalidResponseException;
 /**
  * Class Client
  */
-class Client
+final class Client
 {
     const BASE_URL = 'https://api.yproximite.fr';
 
@@ -188,6 +188,8 @@ class Client
     }
 
     /**
+     * Returns all methods that uses query string to transfer a request data
+     *
      * @return array
      */
     private function getQueryMethods(): array
