@@ -52,4 +52,4 @@ $article = $api->article()->postArticle($message);
 
 # Data flow diagram
 
-![Data flow](./doc/data_flow.svg)
+![Data flow](./doc/data_flow.png)
