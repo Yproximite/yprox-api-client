@@ -49,3 +49,7 @@ $message->addMedia($media);
 // Yproximite\Api\Model\Article
 $article = $api->article()->postArticle($message);
 ```
+
+# Data flow diagram
+
+![Data flow](./doc/data_flow.svg)
