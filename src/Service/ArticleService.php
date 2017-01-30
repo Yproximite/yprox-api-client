@@ -3,8 +3,8 @@ declare(strict_types=1);
 
 namespace Yproximite\Api\Service;
 
-use Yproximite\Api\Message\ArticlePostMessage;
 use Yproximite\Api\Model\Article\Article;
+use Yproximite\Api\Message\ArticlePostMessage;
 
 /**
  * Class ArticleService
@@ -23,6 +23,9 @@ final class ArticleService extends AbstractService implements ServiceInterface
 
         $response = $this->getClient()->sendRequest('POST', $path, $data);
 
-        return new Article($response);
+        /** @var Article $model */
+        $model = $this->getModelFactory()->create(Article::class, $response);
+
+        return $model;
     }
 }

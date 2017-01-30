@@ -3,12 +3,13 @@ declare(strict_types=1);
 
 namespace Yproximite\Api\Model\Article;
 
+use Yproximite\Api\Model\ModelInterface;
 use Yproximite\Api\Model\Inheritance\InheritanceStatuses;
 
 /**
  * Class Category
  */
-class Category
+class Category implements ModelInterface
 {
     /**
      * @var int
@@ -60,8 +61,8 @@ class Category
         $this->translations      = $translations;
         $this->enabled           = (bool) $data['enabled'];
         $this->dataParentId      = !empty($data['dataParent']) ? (int) $data['dataParent'] : null;
-        $this->createdAt         = new \DateTime($data['createdAt']);
-        $this->updatedAt         = new \DateTime($data['updatedAt']);
+        $this->createdAt         = new \DateTime($data['createdAt']['date']);
+        $this->updatedAt         = new \DateTime($data['updatedAt']['date']);
         $this->inheritanceStatus = (string) $data['inheritance_status'];
     }
 

@@ -8,9 +8,9 @@ namespace Yproximite\Api\Model\Inheritance;
  */
 class InheritanceStatuses
 {
-    const INHERITANCE_STATUS_NONE       = 'none';
-    const INHERITANCE_STATUS_INHERITED  = 'inherited';
-    const INHERITANCE_STATUS_OVERRIDDEN = 'overridden';
+    const NONE       = 'none';
+    const INHERITED  = 'inherited';
+    const OVERRIDDEN = 'overridden';
 
     /**
      * @return string[]
@@ -18,9 +18,9 @@ class InheritanceStatuses
     public static function getValues(): array
     {
         return [
-            self::INHERITANCE_STATUS_NONE,
-            self::INHERITANCE_STATUS_INHERITED,
-            self::INHERITANCE_STATUS_OVERRIDDEN,
+            self::NONE,
+            self::INHERITED,
+            self::OVERRIDDEN,
         ];
     }
 }

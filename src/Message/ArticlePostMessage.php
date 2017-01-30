@@ -60,6 +60,14 @@ class ArticlePostMessage implements MessageInterface
     }
 
     /**
+     * @param ArticleTranslationMessage $translation
+     */
+    public function removeTranslation(ArticleTranslationMessage $translation)
+    {
+        array_splice($this->translations, array_search($translation, $this->translations), 1);
+    }
+
+    /**
      * @see Article::getStatuses()
      *
      * @return null|string
@@ -102,11 +110,19 @@ class ArticlePostMessage implements MessageInterface
     }
 
     /**
-     * @param ArticleMediaMessage[] $medias
+     * @param ArticleMediaMessage $media
      */
-    public function setMedias(array $medias)
+    public function addMedia(ArticleMediaMessage $media)
     {
-        $this->medias = $medias;
+        $this->medias[] = $media;
+    }
+
+    /**
+     * @param ArticleMediaMessage $media
+     */
+    public function removeMedia(ArticleMediaMessage $media)
+    {
+        array_splice($this->medias, array_search($media, $this->medias), 1);
     }
 
     /**
@@ -147,7 +163,7 @@ class ArticlePostMessage implements MessageInterface
     public function build(): array
     {
         return [
-            'translations'    => Helper::buildMessages($this->translations),
+            'translations'    => Helper::buildMessages($this->translations, 'locale'),
             'status'          => $this->status,
             'categories'      => $this->categoryIds,
             'articleMedias'   => Helper::buildMessages($this->medias),

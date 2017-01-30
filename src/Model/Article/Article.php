@@ -3,13 +3,14 @@ declare(strict_types=1);
 
 namespace Yproximite\Api\Model\Article;
 
+use Yproximite\Api\Model\ModelInterface;
 use Yproximite\Api\Model\Site\SiteRoute;
 use Yproximite\Api\Model\Inheritance\InheritanceStatuses;
 
 /**
  * Class Article
  */
-class Article
+class Article implements ModelInterface
 {
     const STATUS_DRAFT     = 'draft';
     const STATUS_PUBLISHED = 'published';
@@ -159,8 +160,8 @@ class Article
         $this->shareOnFacebook     = (bool) $data['share_on_facebook'];
         $this->displayOrder        = (int) $data['display_order'];
         $this->dataParentId        = !empty($data['dataParent']) ? (int) $data['dataParent'] : null;
-        $this->createdAt           = new \DateTime($data['createdAt']);
-        $this->updatedAt           = new \DateTime($data['updatedAt']);
+        $this->createdAt           = new \DateTime($data['createdAt']['date']);
+        $this->updatedAt           = new \DateTime($data['updatedAt']['date']);
         $this->inheritanceStatus   = (string) $data['inheritance_status'];
     }
 

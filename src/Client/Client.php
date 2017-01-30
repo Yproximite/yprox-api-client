@@ -15,7 +15,7 @@ use Yproximite\Api\Exception\InvalidResponseException;
 /**
  * Class Client
  */
-final class Client
+class Client
 {
     const BASE_URL = 'https://api.yproximite.fr';
 
@@ -61,8 +61,12 @@ final class Client
      *
      * @throws LogicException
      */
-    public function __construct(HttpClient $httpClient, $apiKey, $baseUrl = self::BASE_URL, MessageFactory $messageFactory = null)
-    {
+    public function __construct(
+        HttpClient $httpClient,
+        $apiKey,
+        $baseUrl = self::BASE_URL,
+        MessageFactory $messageFactory = null
+    ) {
         if (empty($apiKey)) {
             throw new LogicException('The api key cannot be empty.');
         }

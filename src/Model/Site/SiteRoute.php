@@ -3,10 +3,12 @@ declare(strict_types=1);
 
 namespace Yproximite\Api\Model\Site;
 
+use Yproximite\Api\Model\ModelInterface;
+
 /**
  * Class SiteRoute
  */
-class SiteRoute
+class SiteRoute implements ModelInterface
 {
     /**
      * @var string

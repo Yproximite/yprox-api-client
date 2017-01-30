@@ -3,10 +3,12 @@ declare(strict_types=1);
 
 namespace Yproximite\Api\Model\Article;
 
+use Yproximite\Api\Model\ModelInterface;
+
 /**
  * Class ArticleTranslation
  */
-class ArticleTranslation
+class ArticleTranslation implements ModelInterface
 {
     /**
      * @var string

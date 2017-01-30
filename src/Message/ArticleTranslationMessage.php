@@ -8,6 +8,8 @@ namespace Yproximite\Api\Message;
  */
 class ArticleTranslationMessage implements MessageInterface
 {
+    use LocaleAwareMessageTrait;
+
     /**
      * @var string
      */

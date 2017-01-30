@@ -3,10 +3,12 @@ declare(strict_types=1);
 
 namespace Yproximite\Api\Model\Media;
 
+use Yproximite\Api\Model\ModelInterface;
+
 /**
  * Class Media
  */
-class Media
+class Media implements ModelInterface
 {
     /**
      * @var int
