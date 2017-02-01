@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace Yproximite\Api\Message;
 
+use Yproximite\Api\Model\Article\ArticleTranslation;
+
 /**
  * Class ArticleTranslationMessage
  */
@@ -19,6 +21,21 @@ class ArticleTranslationMessage implements MessageInterface
      * @var string|null
      */
     private $body;
+
+    /**
+     * @param ArticleTranslation $translation
+     *
+     * @return self
+     */
+    public static function createFromArticleTranslation(ArticleTranslation $translation): self
+    {
+        $message = new ArticleTranslationMessage();
+        $message->setLocale($translation->getLocale());
+        $message->setTitle($translation->getTitle());
+        $message->setBody($translation->getBody());
+
+        return $message;
+    }
 
     /**
      * @return string

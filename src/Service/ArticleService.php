@@ -5,6 +5,7 @@ namespace Yproximite\Api\Service;
 
 use Yproximite\Api\Model\Article\Article;
 use Yproximite\Api\Message\ArticlePostMessage;
+use Yproximite\Api\Message\ArticlePatchMessage;
 
 /**
  * Class ArticleService
@@ -22,6 +23,24 @@ final class ArticleService extends AbstractService implements ServiceInterface
         $data = ['api_article' => $message->build()];
 
         $response = $this->getClient()->sendRequest('POST', $path, $data);
+
+        /** @var Article $model */
+        $model = $this->getModelFactory()->create(Article::class, $response);
+
+        return $model;
+    }
+
+    /**
+     * @param ArticlePatchMessage $message
+     *
+     * @return Article
+     */
+    public function patchArticle(ArticlePatchMessage $message): Article
+    {
+        $path = sprintf('sites/%d/articles/%d', $message->getSiteId(), $message->getId());
+        $data = ['api_article' => $message->build()];
+
+        $response = $this->getClient()->sendRequest('PATCH', $path, $data);
 
         /** @var Article $model */
         $model = $this->getModelFactory()->create(Article::class, $response);

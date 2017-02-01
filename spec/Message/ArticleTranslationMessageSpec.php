@@ -5,6 +5,7 @@ namespace spec\Yproximite\Api\Message;
 use PhpSpec\ObjectBehavior;
 
 use Yproximite\Api\Message\ArticleTranslationMessage;
+use Yproximite\Api\Model\Article\ArticleTranslation;
 
 class ArticleTranslationMessageSpec extends ObjectBehavior
 {
@@ -24,5 +25,19 @@ class ArticleTranslationMessageSpec extends ObjectBehavior
         ];
 
         $this->build()->shouldReturn($data);
+    }
+
+    function it_should_create_from_article_translation(ArticleTranslation $translation)
+    {
+        $translation->getLocale()->willReturn('en');
+        $translation->getTitle()->willReturn('Big title');
+        $translation->getBody()->willReturn('Long body');
+
+        $message = new ArticleTranslationMessage();
+        $message->setLocale('en');
+        $message->setTitle('Big title');
+        $message->setBody('Long body');
+
+        $this::createFromArticleTranslation($translation)->shouldBeLike($message);
     }
 }

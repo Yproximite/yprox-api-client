@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace Yproximite\Api\Message;
 
+use Yproximite\Api\Model\Article\ArticleMedia;
+
 /**
  * Class ArticleMediaMessage
  */
@@ -17,6 +19,20 @@ class ArticleMediaMessage implements MessageInterface
      * @var int|null
      */
     private $displayOrder;
+
+    /**
+     * @param ArticleMedia $media
+     *
+     * @return self
+     */
+    public static function createFromArticleMedia(ArticleMedia $media): self
+    {
+        $message = new ArticleMediaMessage();
+        $message->setMediaId($media->getMedia()->getId());
+        $message->setDisplayOrder($media->getDisplayOrder());
+
+        return $message;
+    }
 
     /**
      * @return int
