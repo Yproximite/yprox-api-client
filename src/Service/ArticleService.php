@@ -3,11 +3,15 @@ declare(strict_types=1);
 
 namespace Yproximite\Api\Service;
 
-use Yproximite\Api\Message\Article\ArticleListMessage;
 use Yproximite\Api\Model\Article\Article;
+use Yproximite\Api\Model\Article\Category;
+use Yproximite\Api\Message\Article\ArticleListMessage;
 use Yproximite\Api\Message\Article\ArticlePostMessage;
 use Yproximite\Api\Message\Article\ArticlePatchMessage;
+use Yproximite\Api\Message\Article\CategoryListMessage;
 use Yproximite\Api\Message\Article\ArticleUnpublishMessage;
+use Yproximite\Api\Message\Article\CategoryArticlePublishMessage;
+use Yproximite\Api\Message\Article\CategoryArticleUnpublishMessage;
 
 /**
  * Class ArticleService
@@ -83,5 +87,58 @@ final class ArticleService extends AbstractService implements ServiceInterface
         $models = $this->getModelFactory()->createMany(Article::class, $response);
 
         return $models;
+    }
+
+    /**
+     * @param CategoryListMessage $message
+     *
+     * @return Category[]
+     */
+    public function getCategories(CategoryListMessage $message): array
+    {
+        $path = sprintf('sites/%d/categories', $message->getSiteId());
+
+        $response = $this->getClient()->sendRequest('GET', $path);
+
+        /** @var Category[] $models */
+        $models = $this->getModelFactory()->createMany(Category::class, $response);
+
+        return $models;
+    }
+
+    /**
+     * @param CategoryArticlePublishMessage $message
+     *
+     * @return Category
+     */
+    public function publishCategoryArticles(CategoryArticlePublishMessage $message): Category
+    {
+        $path = sprintf('sites/%d/categories/%d/publish_articles', $message->getSiteId(), $message->getCategoryId());
+        $data = ['api_publish_articles' => $message->build()];
+
+        $response = $this->getClient()->sendRequest('POST', $path, $data);
+
+        /** @var Category $model */
+        $model = $this->getModelFactory()->create(Category::class, $response);
+
+        return $model;
+    }
+
+    /**
+     * @param CategoryArticleUnpublishMessage $message
+     *
+     * @return Category
+     */
+    public function unpublishCategoryArticles(CategoryArticleUnpublishMessage $message): Category
+    {
+        $path = sprintf('sites/%d/categories/%d/unpublish_articles', $message->getSiteId(), $message->getCategoryId());
+        $data = ['api_unpublish_articles' => $message->build()];
+
+        $response = $this->getClient()->sendRequest('POST', $path, $data);
+
+        /** @var Category $model */
+        $model = $this->getModelFactory()->create(Category::class, $response);
+
+        return $model;
     }
 }
