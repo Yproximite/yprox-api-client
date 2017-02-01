@@ -49,6 +49,17 @@ final class ServiceAggregator
     }
 
     /**
+     * @return CompanyService
+     */
+    public function company(): CompanyService
+    {
+        /** @var CompanyService $service */
+        $service = $this->getService(CompanyService::class);
+
+        return $service;
+    }
+
+    /**
      * @param string $class
      *
      * @return ServiceInterface

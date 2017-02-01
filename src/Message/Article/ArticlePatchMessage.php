@@ -5,16 +5,14 @@ namespace Yproximite\Api\Message\Article;
 
 use Yproximite\Api\Model\Article\Article;
 use Yproximite\Api\Model\Article\Category;
+use Yproximite\Api\Message\IdentityAwareMessageTrait;
 
 /**
  * Class ArticlePatchMessage
  */
 class ArticlePatchMessage extends ArticleMessage
 {
-    /**
-     * @var int
-     */
-    private $id;
+    use IdentityAwareMessageTrait;
 
     /**
      * @param Article $article
@@ -48,21 +46,5 @@ class ArticlePatchMessage extends ArticleMessage
         }
 
         return $message;
-    }
-
-    /**
-     * @return int
-     */
-    public function getId(): int
-    {
-        return $this->id;
-    }
-
-    /**
-     * @param int $id
-     */
-    public function setId(int $id)
-    {
-        $this->id = $id;
     }
 }
