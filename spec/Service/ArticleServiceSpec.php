@@ -8,6 +8,7 @@ use Yproximite\Api\Client\Client;
 use Yproximite\Api\Factory\ModelFactory;
 use Yproximite\Api\Model\Article\Article;
 use Yproximite\Api\Service\ArticleService;
+use Yproximite\Api\Message\Article\ArticleListMessage;
 use Yproximite\Api\Message\Article\ArticlePostMessage;
 use Yproximite\Api\Message\Article\ArticlePatchMessage;
 use Yproximite\Api\Message\Article\ArticleUnpublishMessage;
@@ -22,6 +23,25 @@ class ArticleServiceSpec extends ObjectBehavior
     function let(Client $client, ModelFactory $factory)
     {
         $this->beConstructedWith($client, $factory);
+    }
+
+    function it_should_get_articles(
+        Client $client,
+        ModelFactory $factory,
+        ArticleListMessage $message
+    ) {
+        $message->getSiteId()->willReturn(1);
+        $message->build()->willReturn([]);
+
+        $method = 'GET';
+        $path   = 'sites/1/articles';
+
+        $client->sendRequest($method, $path)->willReturn([]);
+        $client->sendRequest($method, $path)->shouldBeCalled();
+
+        $factory->createMany(Article::class, [])->willReturn([]);
+
+        $this->getArticles($message);
     }
 
     function it_should_post_article(

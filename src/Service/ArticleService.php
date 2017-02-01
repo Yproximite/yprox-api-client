@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace Yproximite\Api\Service;
 
+use Yproximite\Api\Message\Article\ArticleListMessage;
 use Yproximite\Api\Model\Article\Article;
 use Yproximite\Api\Message\Article\ArticlePostMessage;
 use Yproximite\Api\Message\Article\ArticlePatchMessage;
@@ -13,6 +14,23 @@ use Yproximite\Api\Message\Article\ArticleUnpublishMessage;
  */
 final class ArticleService extends AbstractService implements ServiceInterface
 {
+    /**
+     * @param ArticleListMessage $message
+     *
+     * @return Article[]
+     */
+    public function getArticles(ArticleListMessage $message): array
+    {
+        $path = sprintf('sites/%d/articles', $message->getSiteId());
+
+        $response = $this->getClient()->sendRequest('GET', $path);
+
+        /** @var Article[] $models */
+        $models = $this->getModelFactory()->createMany(Article::class, $response);
+
+        return $models;
+    }
+
     /**
      * @param ArticlePostMessage $message
      *
