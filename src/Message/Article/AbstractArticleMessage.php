@@ -9,9 +9,9 @@ use Yproximite\Api\Message\MessageInterface;
 use Yproximite\Api\Message\SiteAwareMessageTrait;
 
 /**
- * Class ArticleMessage
+ * Class AbstractArticleMessage
  */
-class ArticleMessage implements MessageInterface
+abstract class AbstractArticleMessage implements MessageInterface
 {
     use SiteAwareMessageTrait;
 
@@ -165,12 +165,12 @@ class ArticleMessage implements MessageInterface
     public function build(): array
     {
         return [
-            'translations'    => Helper::buildMessages($this->translations, 'locale'),
-            'status'          => $this->status,
-            'categories'      => $this->categoryIds,
-            'articleMedias'   => Helper::buildMessages($this->medias),
-            'mediaLimit'      => $this->mediaLimit,
-            'shareOnFacebook' => $this->shareOnFacebook,
+            'translations'    => Helper::buildMessages($this->getTranslations(), 'locale'),
+            'status'          => $this->getStatus(),
+            'categories'      => $this->getCategoryIds(),
+            'articleMedias'   => Helper::buildMessages($this->getMedias()),
+            'mediaLimit'      => $this->getMediaLimit(),
+            'shareOnFacebook' => $this->isShareOnFacebook(),
         ];
     }
 }

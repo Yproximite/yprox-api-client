@@ -40,7 +40,7 @@ class ArticleUnpublishMessage implements MessageInterface
     public function build(): array
     {
         return [
-            'articles' => $this->articleIds,
+            'articles' => $this->getArticleIds(),
         ];
     }
 }

@@ -9,7 +9,7 @@ use Yproximite\Api\Message\IdentityAwareMessageTrait;
 /**
  * Class UserPatchMessage
  */
-class UserPatchMessage extends UserMessage
+class UserPatchMessage extends AbstractUserMessage
 {
     use IdentityAwareMessageTrait;
 

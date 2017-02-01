@@ -28,7 +28,7 @@ class ArticleMediaMessage implements MessageInterface
      */
     public static function createFromArticleMedia(ArticleMedia $media): self
     {
-        $message = new ArticleMediaMessage();
+        $message = new self();
         $message->setMediaId($media->getMedia()->getId());
         $message->setDisplayOrder($media->getDisplayOrder());
 
@@ -73,8 +73,8 @@ class ArticleMediaMessage implements MessageInterface
     public function build(): array
     {
         return [
-            'media'        => $this->mediaId,
-            'displayOrder' => $this->displayOrder,
+            'media'        => $this->getMediaId(),
+            'displayOrder' => $this->getDisplayOrder(),
         ];
     }
 }

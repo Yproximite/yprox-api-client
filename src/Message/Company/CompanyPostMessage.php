@@ -6,6 +6,6 @@ namespace Yproximite\Api\Message\Company;
 /**
  * Class CompanyPostMessage
  */
-class CompanyPostMessage extends CompanyMessage
+class CompanyPostMessage extends AbstractCompanyMessage
 {
 }

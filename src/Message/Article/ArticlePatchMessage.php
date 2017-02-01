@@ -10,7 +10,7 @@ use Yproximite\Api\Message\IdentityAwareMessageTrait;
 /**
  * Class ArticlePatchMessage
  */
-class ArticlePatchMessage extends ArticleMessage
+class ArticlePatchMessage extends AbstractArticleMessage
 {
     use IdentityAwareMessageTrait;
 
@@ -21,13 +21,13 @@ class ArticlePatchMessage extends ArticleMessage
      */
     public static function createFromArticle(Article $article): self
     {
-        $message = new ArticlePatchMessage();
+        $message = new self();
         $message->setId($article->getId());
         $message->setStatus($article->getStatus());
         $message->setMediaLimit($article->getMediaLimit());
         $message->setShareOnFacebook($article->isShareOnFacebook());
 
-        $categoryIds = array_map(function(Category $category) {
+        $categoryIds = array_map(function (Category $category) {
             return $category->getId();
         }, $article->getCategories());
 

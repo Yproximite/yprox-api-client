@@ -5,7 +5,10 @@ namespace Yproximite\Api\Message\User;
 
 use Yproximite\Api\Message\MessageInterface;
 
-class UserMessage implements MessageInterface
+/**
+ * Class AbstractUserMessage
+ */
+abstract class AbstractUserMessage implements MessageInterface
 {
     /**
      * @var string

@@ -8,7 +8,7 @@ use Yproximite\Api\Exception\LogicException;
 /**
  * Class UserPostMessage
  */
-class UserPostMessage extends UserMessage
+class UserPostMessage extends AbstractUserMessage
 {
     /**
      * {@inheritdoc}

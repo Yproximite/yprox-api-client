@@ -6,6 +6,6 @@ namespace Yproximite\Api\Message\Article;
 /**
  * Class ArticlePostMessage
  */
-class ArticlePostMessage extends ArticleMessage
+class ArticlePostMessage extends AbstractArticleMessage
 {
 }

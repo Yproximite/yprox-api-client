@@ -31,7 +31,7 @@ class ArticleTranslationMessage implements MessageInterface
      */
     public static function createFromArticleTranslation(ArticleTranslation $translation): self
     {
-        $message = new ArticleTranslationMessage();
+        $message = new self();
         $message->setLocale($translation->getLocale());
         $message->setTitle($translation->getTitle());
         $message->setBody($translation->getBody());
@@ -77,8 +77,8 @@ class ArticleTranslationMessage implements MessageInterface
     public function build(): array
     {
         return [
-            'title' => $this->title,
-            'body'  => $this->body,
+            'title' => $this->getTitle(),
+            'body'  => $this->getBody(),
         ];
     }
 }

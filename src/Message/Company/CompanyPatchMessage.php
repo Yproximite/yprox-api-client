@@ -9,7 +9,7 @@ use Yproximite\Api\Message\IdentityAwareMessageTrait;
 /**
  * Class CompanyPatchMessage
  */
-class CompanyPatchMessage extends CompanyMessage
+class CompanyPatchMessage extends AbstractCompanyMessage
 {
     use IdentityAwareMessageTrait;
 
@@ -20,7 +20,7 @@ class CompanyPatchMessage extends CompanyMessage
      */
     public static function createFromCompany(Company $company): self
     {
-        $message = new CompanyPatchMessage();
+        $message = new self();
         $message->setId($company->getId());
         $message->setName($company->getName());
         $message->setParentId($company->getParentId());

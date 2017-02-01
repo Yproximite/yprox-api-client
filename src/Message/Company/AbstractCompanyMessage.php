@@ -6,9 +6,9 @@ namespace Yproximite\Api\Message\Company;
 use Yproximite\Api\Message\MessageInterface;
 
 /**
- * Class CompanyMessage
+ * Class AbstractCompanyMessage
  */
-class CompanyMessage implements MessageInterface
+abstract class AbstractCompanyMessage implements MessageInterface
 {
     /**
      * @var string
@@ -58,8 +58,8 @@ class CompanyMessage implements MessageInterface
     public function build(): array
     {
         return [
-            'companyName' => $this->name,
-            'parent'      => $this->parentId,
+            'companyName' => $this->getName(),
+            'parent'      => $this->getParentId(),
         ];
     }
 }
