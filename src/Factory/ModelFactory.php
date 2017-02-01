@@ -20,4 +20,17 @@ class ModelFactory
     {
         return new $class($data);
     }
+
+    /**
+     * @param string $class
+     * @param array  $list
+     *
+     * @return ModelInterface[]
+     */
+    public function createMany(string $class, array $list): array
+    {
+        return array_map(function (array $data) use ($class) {
+            return self::create($class, $data);
+        }, $list);
+    }
 }

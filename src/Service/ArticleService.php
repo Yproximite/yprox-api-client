@@ -6,6 +6,7 @@ namespace Yproximite\Api\Service;
 use Yproximite\Api\Model\Article\Article;
 use Yproximite\Api\Message\Article\ArticlePostMessage;
 use Yproximite\Api\Message\Article\ArticlePatchMessage;
+use Yproximite\Api\Message\Article\ArticleUnpublishMessage;
 
 /**
  * Class ArticleService
@@ -46,5 +47,23 @@ final class ArticleService extends AbstractService implements ServiceInterface
         $model = $this->getModelFactory()->create(Article::class, $response);
 
         return $model;
+    }
+
+    /**
+     * @param ArticleUnpublishMessage $message
+     *
+     * @return Article[]
+     */
+    public function unpublishArticles(ArticleUnpublishMessage $message): array
+    {
+        $path = sprintf('sites/%d/articles/unpublish', $message->getSiteId());
+        $data = ['api_unpublish_articles_global' => $message->build()];
+
+        $response = $this->getClient()->sendRequest('POST', $path, $data);
+
+        /** @var Article[] $models */
+        $models = $this->getModelFactory()->createMany(Article::class, $response);
+
+        return $models;
     }
 }
