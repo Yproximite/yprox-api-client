@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Yproximite\Api\Message;
+namespace spec\Yproximite\Api\Message\Article;
 
 use PhpSpec\ObjectBehavior;
 
@@ -8,10 +8,10 @@ use Yproximite\Api\Model\Media\Media;
 use Yproximite\Api\Model\Article\Article;
 use Yproximite\Api\Model\Article\Category;
 use Yproximite\Api\Model\Article\ArticleMedia;
-use Yproximite\Api\Message\ArticleMediaMessage;
-use Yproximite\Api\Message\ArticlePatchMessage;
 use Yproximite\Api\Model\Article\ArticleTranslation;
-use Yproximite\Api\Message\ArticleTranslationMessage;
+use Yproximite\Api\Message\Article\ArticleMediaMessage;
+use Yproximite\Api\Message\Article\ArticlePatchMessage;
+use Yproximite\Api\Message\Article\ArticleTranslationMessage;
 
 class ArticlePatchMessageSpec extends ObjectBehavior
 {

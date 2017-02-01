@@ -10,9 +10,9 @@ use Http\Message\MessageFactory;
 use Yproximite\Api\Client\Client;
 use Yproximite\Api\Model\Article\Article;
 use Yproximite\Api\Service\ServiceAggregator;
-use Yproximite\Api\Message\ArticlePostMessage;
-use Yproximite\Api\Message\ArticleMediaMessage;
-use Yproximite\Api\Message\ArticleTranslationMessage;
+use Yproximite\Api\Message\Article\ArticlePostMessage;
+use Yproximite\Api\Message\Article\ArticleMediaMessage;
+use Yproximite\Api\Message\Article\ArticleTranslationMessage;
 
 // Step 1: Create a client
 

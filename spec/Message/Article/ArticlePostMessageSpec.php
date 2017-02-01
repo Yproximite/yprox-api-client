@@ -1,13 +1,13 @@
 <?php
 
-namespace spec\Yproximite\Api\Message;
+namespace spec\Yproximite\Api\Message\Article;
 
 use PhpSpec\ObjectBehavior;
 
 use Yproximite\Api\Model\Article\Article;
-use Yproximite\Api\Message\ArticlePostMessage;
-use Yproximite\Api\Message\ArticleMediaMessage;
-use Yproximite\Api\Message\ArticleTranslationMessage;
+use Yproximite\Api\Message\Article\ArticlePostMessage;
+use Yproximite\Api\Message\Article\ArticleMediaMessage;
+use Yproximite\Api\Message\Article\ArticleTranslationMessage;
 
 class ArticlePostMessageSpec extends ObjectBehavior
 {

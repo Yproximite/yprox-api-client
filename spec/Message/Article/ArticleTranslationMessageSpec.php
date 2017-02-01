@@ -1,11 +1,11 @@
 <?php
 
-namespace spec\Yproximite\Api\Message;
+namespace spec\Yproximite\Api\Message\Article;
 
 use PhpSpec\ObjectBehavior;
 
-use Yproximite\Api\Message\ArticleTranslationMessage;
 use Yproximite\Api\Model\Article\ArticleTranslation;
+use Yproximite\Api\Message\Article\ArticleTranslationMessage;
 
 class ArticleTranslationMessageSpec extends ObjectBehavior
 {

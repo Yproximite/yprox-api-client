@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Yproximite\Api\Message;
+namespace Yproximite\Api\Message\Article;
 
 use Yproximite\Api\Model\Article\Article;
 use Yproximite\Api\Model\Article\Category;

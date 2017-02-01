@@ -1,12 +1,12 @@
 <?php
 
-namespace spec\Yproximite\Api\Message;
+namespace spec\Yproximite\Api\Message\Article;
 
 use PhpSpec\ObjectBehavior;
 
 use Yproximite\Api\Model\Media\Media;
 use Yproximite\Api\Model\Article\ArticleMedia;
-use Yproximite\Api\Message\ArticleMediaMessage;
+use Yproximite\Api\Message\Article\ArticleMediaMessage;
 
 class ArticleMediaMessageSpec extends ObjectBehavior
 {

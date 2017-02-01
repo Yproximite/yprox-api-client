@@ -8,7 +8,7 @@ use Yproximite\Api\Client\Client;
 use Yproximite\Api\Factory\ModelFactory;
 use Yproximite\Api\Model\Article\Article;
 use Yproximite\Api\Service\ArticleService;
-use Yproximite\Api\Message\ArticlePostMessage;
+use Yproximite\Api\Message\Article\ArticlePostMessage;
 
 class ArticleServiceSpec extends ObjectBehavior
 {

@@ -1,8 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace Yproximite\Api\Message;
+namespace Yproximite\Api\Message\Article;
 
+use Yproximite\Api\Message\MessageInterface;
 use Yproximite\Api\Model\Article\ArticleMedia;
 
 /**

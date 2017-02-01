@@ -4,8 +4,8 @@ declare(strict_types=1);
 namespace Yproximite\Api\Service;
 
 use Yproximite\Api\Model\Article\Article;
-use Yproximite\Api\Message\ArticlePostMessage;
-use Yproximite\Api\Message\ArticlePatchMessage;
+use Yproximite\Api\Message\Article\ArticlePostMessage;
+use Yproximite\Api\Message\Article\ArticlePatchMessage;
 
 /**
  * Class ArticleService
