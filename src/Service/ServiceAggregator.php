@@ -60,6 +60,17 @@ final class ServiceAggregator
     }
 
     /**
+     * @return UserService
+     */
+    public function user(): UserService
+    {
+        /** @var UserService $service */
+        $service = $this->getService(UserService::class);
+
+        return $service;
+    }
+
+    /**
      * @param string $class
      *
      * @return ServiceInterface
