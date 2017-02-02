@@ -14,6 +14,7 @@ use Yproximite\Api\Message\Article\ArticlePostMessage;
 use Yproximite\Api\Message\Article\ArticlePatchMessage;
 use Yproximite\Api\Message\Article\CategoryListMessage;
 use Yproximite\Api\Message\Article\ArticleUnpublishMessage;
+use Yproximite\Api\Message\Article\CategoryOverrideMessage;
 use Yproximite\Api\Message\Article\CategoryArticlePublishMessage;
 use Yproximite\Api\Message\Article\CategoryArticleUnpublishMessage;
 
@@ -128,6 +129,27 @@ class ArticleServiceSpec extends ObjectBehavior
         $factory->createMany(Category::class, [])->willReturn([]);
 
         $this->getCategories($message);
+    }
+
+    function it_should_override_category(
+        Client $client,
+        ModelFactory $factory,
+        CategoryOverrideMessage $message,
+        Category $category
+    ) {
+        $message->getId()->willReturn(5);
+        $message->getSiteId()->willReturn(1);
+        $message->build()->willReturn([]);
+
+        $method = 'GET';
+        $path   = 'sites/1/categories/5/override';
+
+        $client->sendRequest($method, $path)->willReturn([]);
+        $client->sendRequest($method, $path)->shouldBeCalled();
+
+        $factory->create(Category::class, [])->willReturn($category);
+
+        $this->overrideCategory($message);
     }
 
     function it_should_publish_category_articles(
