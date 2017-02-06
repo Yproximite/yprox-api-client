@@ -41,9 +41,9 @@ abstract class AbstractArticleMessage implements MessageInterface
     private $mediaLimit;
 
     /**
-     * @var bool
+     * @var bool|null
      */
-    private $shareOnFacebook = false;
+    private $shareOnFacebook;
 
     /**
      * @return ArticleTranslationMessage[]
@@ -144,17 +144,17 @@ abstract class AbstractArticleMessage implements MessageInterface
     }
 
     /**
-     * @return bool
+     * @return bool|null
      */
-    public function isShareOnFacebook(): bool
+    public function isShareOnFacebook()
     {
         return $this->shareOnFacebook;
     }
 
     /**
-     * @param bool $shareOnFacebook
+     * @param bool|null $shareOnFacebook
      */
-    public function setShareOnFacebook(bool $shareOnFacebook)
+    public function setShareOnFacebook(bool $shareOnFacebook = null)
     {
         $this->shareOnFacebook = $shareOnFacebook;
     }

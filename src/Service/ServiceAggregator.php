@@ -60,6 +60,17 @@ final class ServiceAggregator
     }
 
     /**
+     * @return LocationService
+     */
+    public function location(): LocationService
+    {
+        /** @var LocationService $service */
+        $service = $this->getService(LocationService::class);
+
+        return $service;
+    }
+
+    /**
      * @return UserService
      */
     public function user(): UserService
