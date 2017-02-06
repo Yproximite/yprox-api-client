@@ -60,6 +60,17 @@ final class ServiceAggregator
     }
 
     /**
+     * @return FieldService
+     */
+    public function field(): FieldService
+    {
+        /** @var FieldService $service */
+        $service = $this->getService(FieldService::class);
+
+        return $service;
+    }
+
+    /**
      * @return LocationService
      */
     public function location(): LocationService
