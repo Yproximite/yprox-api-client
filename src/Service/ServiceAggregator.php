@@ -82,6 +82,17 @@ final class ServiceAggregator
     }
 
     /**
+     * @return SiteService
+     */
+    public function site(): SiteService
+    {
+        /** @var SiteService $service */
+        $service = $this->getService(SiteService::class);
+
+        return $service;
+    }
+
+    /**
      * @return UserService
      */
     public function user(): UserService
