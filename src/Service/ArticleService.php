@@ -11,6 +11,7 @@ use Yproximite\Api\Message\Article\ArticlePatchMessage;
 use Yproximite\Api\Message\Article\CategoryListMessage;
 use Yproximite\Api\Message\Article\ArticleUnpublishMessage;
 use Yproximite\Api\Message\Article\CategoryOverrideMessage;
+use Yproximite\Api\Message\Article\CategoryArticleListMessage;
 use Yproximite\Api\Message\Article\CategoryArticlePublishMessage;
 use Yproximite\Api\Message\Article\CategoryArticleUnpublishMessage;
 
@@ -122,6 +123,23 @@ final class ArticleService extends AbstractService implements ServiceInterface
         $model = $this->getModelFactory()->create(Category::class, $response);
 
         return $model;
+    }
+
+    /**
+     * @param CategoryArticleListMessage $message
+     *
+     * @return Article[]
+     */
+    public function getCategoryArticles(CategoryArticleListMessage $message): array
+    {
+        $path = sprintf('sites/%d/categories/%d/articles', $message->getSiteId(), $message->getCategoryId());
+
+        $response = $this->getClient()->sendRequest('GET', $path);
+
+        /** @var Article[] $models */
+        $models = $this->getModelFactory()->createMany(Article::class, $response);
+
+        return $models;
     }
 
     /**
