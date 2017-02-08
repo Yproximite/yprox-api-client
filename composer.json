@@ -20,7 +20,7 @@
     "php-http/message-factory": "^1.0.2",
     "php-http/httplug": "^1.0",
     "php-http/discovery": "^1.0",
-    "symfony/property-access": "^3.2"
+    "symfony/property-access": "^2.8 || ^3.0"
   },
   "require-dev": {
     "phpspec/phpspec": "^3.2",
