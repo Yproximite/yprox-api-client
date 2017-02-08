@@ -3,6 +3,12 @@
   "type": "library",
   "description": "Client library for yProx API",
   "license": "MIT",
+  "authors": [
+    {
+      "name": "Nikita Sviridenko",
+      "email": "mail.sviridenko@gmail.com"
+    }
+  ],
   "repositories": [
     {
       "type": "vcs",
