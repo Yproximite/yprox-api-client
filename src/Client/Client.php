@@ -20,12 +20,12 @@ class Client
     const BASE_URL = 'https://api.yproximite.fr';
 
     /**
-     * @var string
+     * @var string|null
      */
     private $baseUrl;
 
     /**
-     * @var string
+     * @var string|null
      */
     private $apiKey;
 
@@ -55,22 +55,18 @@ class Client
      * Client constructor.
      *
      * @param HttpClient          $httpClient
-     * @param string              $apiKey
-     * @param string              $baseUrl
+     * @param string|null         $apiKey
+     * @param string|null         $baseUrl
      * @param MessageFactory|null $messageFactory
      *
      * @throws LogicException
      */
     public function __construct(
         HttpClient $httpClient,
-        $apiKey,
-        $baseUrl = self::BASE_URL,
+        string $apiKey = null,
+        string $baseUrl = null,
         MessageFactory $messageFactory = null
     ) {
-        if (empty($apiKey)) {
-            throw new LogicException('The api key cannot be empty.');
-        }
-
         if (empty($baseUrl)) {
             throw new LogicException('The base url cannot be empty.');
         }
@@ -79,6 +75,24 @@ class Client
         $this->messageFactory = $messageFactory;
         $this->apiKey         = $apiKey;
         $this->baseUrl        = $baseUrl;
+    }
+
+    /**
+     * @param null|string $baseUrl
+     */
+    public function setBaseUrl(string $baseUrl = null)
+    {
+        $this->baseUrl = $baseUrl;
+    }
+
+    /**
+     * @param null|string $apiKey
+     */
+    public function setApiKey(string $apiKey = null)
+    {
+        $this->apiKey = $apiKey;
+
+        $this->resetApiToken();
     }
 
     /**
@@ -94,7 +108,9 @@ class Client
      */
     public function sendRequest(string $method, string $path, array $data = [], bool $withAuthorization = true)
     {
-        $uri   = $this->baseUrl.$path;
+        $uri  = $this->getSafeBaseUrl();
+        $uri .= $path;
+
         $query = http_build_query($data);
         $body  = null;
 
@@ -122,6 +138,14 @@ class Client
         }
 
         return $data;
+    }
+
+    /**
+     * @return string
+     */
+    private function getSafeBaseUrl(): string
+    {
+        return !is_null($this->baseUrl) ? $this->baseUrl : self::BASE_URL;
     }
 
     /**
@@ -210,16 +234,25 @@ class Client
         if (!is_null($this->apiToken)) {
             $this->apiTokenFresh = false;
         } else {
-            $data = $this->sendRequest('POST', '/login_check', ['api_key' => $this->apiKey], false);
-
-            if (!is_array($data) || !array_key_exists('token', $data)) {
-                throw new LogicException('Could not retreive a token.');
-            }
-
-            $this->apiToken = (string) $data['token'];
+            $this->updateApiToken();
         }
 
         return $this->apiToken;
+    }
+
+    private function updateApiToken()
+    {
+        if (is_null($this->apiKey)) {
+            throw new LogicException('The api key cannot be empty.');
+        }
+
+        $data = $this->sendRequest('POST', '/login_check', ['api_key' => $this->apiKey], false);
+
+        if (!is_array($data) || !array_key_exists('token', $data)) {
+            throw new LogicException('Could not retreive a token.');
+        }
+
+        $this->apiToken = (string) $data['token'];
     }
 
     private function resetApiToken()
