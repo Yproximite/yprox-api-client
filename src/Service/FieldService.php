@@ -12,7 +12,7 @@ use Yproximite\Api\Message\Field\FieldOverrideMessage;
 /**
  * Class FieldService
  */
-final class FieldService extends AbstractService implements ServiceInterface
+class FieldService extends AbstractService implements ServiceInterface
 {
     /**
      * @param FieldListMessage $message

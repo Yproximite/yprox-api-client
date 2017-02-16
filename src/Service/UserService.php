@@ -10,7 +10,7 @@ use Yproximite\Api\Message\User\UserPatchMessage;
 /**
  * Class UserService
  */
-final class UserService extends AbstractService implements ServiceInterface
+class UserService extends AbstractService implements ServiceInterface
 {
     /**
      * @param UserPostMessage $message

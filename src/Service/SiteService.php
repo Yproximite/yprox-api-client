@@ -3,14 +3,14 @@ declare(strict_types=1);
 
 namespace Yproximite\Api\Service;
 
-use Yproximite\Api\Message\Site\PlatformChildrenListMessage;
 use Yproximite\Api\Model\Site\Site;
 use Yproximite\Api\Message\Site\SitePostMessage;
+use Yproximite\Api\Message\Site\PlatformChildrenListMessage;
 
 /**
  * Class SiteService
  */
-final class SiteService extends AbstractService implements ServiceInterface
+class SiteService extends AbstractService implements ServiceInterface
 {
     /**
      * @return Site[]

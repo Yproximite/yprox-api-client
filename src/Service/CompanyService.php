@@ -10,7 +10,7 @@ use Yproximite\Api\Message\Company\CompanyPatchMessage;
 /**
  * Class CompanyService
  */
-final class CompanyService extends AbstractService implements ServiceInterface
+class CompanyService extends AbstractService implements ServiceInterface
 {
     /**
      * @param CompanyPostMessage $message

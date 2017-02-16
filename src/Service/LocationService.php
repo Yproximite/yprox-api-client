@@ -12,7 +12,7 @@ use Yproximite\Api\Message\Location\LocationOverrideMessage;
 /**
  * Class LocationService
  */
-final class LocationService extends AbstractService implements ServiceInterface
+class LocationService extends AbstractService implements ServiceInterface
 {
     /**
      * @param LocationListMessage $message

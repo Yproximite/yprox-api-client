@@ -9,7 +9,7 @@ use Yproximite\Api\Factory\ModelFactory;
 /**
  * Class ServiceAggregator
  */
-final class ServiceAggregator
+class ServiceAggregator
 {
     /**
      * @var Client

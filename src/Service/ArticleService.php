@@ -20,7 +20,7 @@ use Yproximite\Api\Message\Article\CategoryArticleUnpublishMessage;
 /**
  * Class ArticleService
  */
-final class ArticleService extends AbstractService implements ServiceInterface
+class ArticleService extends AbstractService implements ServiceInterface
 {
     /**
      * @param ArticleListMessage $message
