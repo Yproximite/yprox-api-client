@@ -49,6 +49,7 @@ class CategoryPatchMessageSpec extends ObjectBehavior
         $translation->getTitle()->willReturn('English title');
         $translation->getDescription()->willReturn('English description');
 
+        $category->getId()->willReturn(1);
         $category->isEnabled()->willReturn(true);
         $category->getTranslations()->willReturn([$translation]);
 
@@ -58,6 +59,7 @@ class CategoryPatchMessageSpec extends ObjectBehavior
         $transMessage->setDescription('English description');
 
         $message = new CategoryPatchMessage();
+        $message->setId(1);
         $message->setEnabled(true);
         $message->addTranslation($transMessage);
 

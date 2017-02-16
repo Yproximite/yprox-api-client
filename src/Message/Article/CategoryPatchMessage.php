@@ -21,6 +21,7 @@ class CategoryPatchMessage extends AbstractCategoryMessage
     public static function createFromCategory(Category $category): self
     {
         $message = new self();
+        $message->setId($category->getId());
         $message->setEnabled($category->isEnabled());
 
         foreach ($category->getTranslations() as $translation) {
