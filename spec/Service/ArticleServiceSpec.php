@@ -13,6 +13,8 @@ use Yproximite\Api\Message\Article\ArticleListMessage;
 use Yproximite\Api\Message\Article\ArticlePostMessage;
 use Yproximite\Api\Message\Article\ArticlePatchMessage;
 use Yproximite\Api\Message\Article\CategoryListMessage;
+use Yproximite\Api\Message\Article\CategoryPostMessage;
+use Yproximite\Api\Message\Article\CategoryPatchMessage;
 use Yproximite\Api\Message\Article\ArticleUnpublishMessage;
 use Yproximite\Api\Message\Article\CategoryOverrideMessage;
 use Yproximite\Api\Message\Article\CategoryArticleListMessage;
@@ -130,6 +132,49 @@ class ArticleServiceSpec extends ObjectBehavior
         $factory->createMany(Category::class, [])->willReturn([]);
 
         $this->getCategories($message);
+    }
+
+    function it_should_post_category(
+        Client $client,
+        ModelFactory $factory,
+        CategoryPostMessage $message,
+        Category $category
+    ) {
+        $message->getSiteId()->willReturn(1);
+        $message->build()->willReturn([]);
+
+        $method = 'POST';
+        $path   = 'sites/1/categories';
+        $data   = ['api_category' => []];
+
+        $client->sendRequest($method, $path, $data)->willReturn([]);
+        $client->sendRequest($method, $path, $data)->shouldBeCalled();
+
+        $factory->create(Category::class, [])->willReturn($category);
+
+        $this->postCategory($message);
+    }
+
+    function it_should_patch_category(
+        Client $client,
+        ModelFactory $factory,
+        CategoryPatchMessage $message,
+        Category $category
+    ) {
+        $message->getId()->willReturn(2);
+        $message->getSiteId()->willReturn(1);
+        $message->build()->willReturn([]);
+
+        $method = 'PATCH';
+        $path   = 'sites/1/categories/2';
+        $data   = ['api_category' => []];
+
+        $client->sendRequest($method, $path, $data)->willReturn([]);
+        $client->sendRequest($method, $path, $data)->shouldBeCalled();
+
+        $factory->create(Category::class, [])->willReturn($category);
+
+        $this->patchCategory($message);
     }
 
     function it_should_override_category(

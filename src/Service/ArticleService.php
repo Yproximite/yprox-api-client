@@ -9,6 +9,8 @@ use Yproximite\Api\Message\Article\ArticleListMessage;
 use Yproximite\Api\Message\Article\ArticlePostMessage;
 use Yproximite\Api\Message\Article\ArticlePatchMessage;
 use Yproximite\Api\Message\Article\CategoryListMessage;
+use Yproximite\Api\Message\Article\CategoryPostMessage;
+use Yproximite\Api\Message\Article\CategoryPatchMessage;
 use Yproximite\Api\Message\Article\ArticleUnpublishMessage;
 use Yproximite\Api\Message\Article\CategoryOverrideMessage;
 use Yproximite\Api\Message\Article\CategoryArticleListMessage;
@@ -106,6 +108,42 @@ final class ArticleService extends AbstractService implements ServiceInterface
         $models = $this->getModelFactory()->createMany(Category::class, $response);
 
         return $models;
+    }
+
+    /**
+     * @param CategoryPostMessage $message
+     *
+     * @return Category
+     */
+    public function postCategory(CategoryPostMessage $message): Category
+    {
+        $path = sprintf('sites/%d/categories', $message->getSiteId());
+        $data = ['api_category' => $message->build()];
+
+        $response = $this->getClient()->sendRequest('POST', $path, $data);
+
+        /** @var Category $model */
+        $model = $this->getModelFactory()->create(Category::class, $response);
+
+        return $model;
+    }
+
+    /**
+     * @param CategoryPatchMessage $message
+     *
+     * @return Category
+     */
+    public function patchCategory(CategoryPatchMessage $message): Category
+    {
+        $path = sprintf('sites/%d/categories/%d', $message->getSiteId(), $message->getId());
+        $data = ['api_category' => $message->build()];
+
+        $response = $this->getClient()->sendRequest('PATCH', $path, $data);
+
+        /** @var Category $model */
+        $model = $this->getModelFactory()->create(Category::class, $response);
+
+        return $model;
     }
 
     /**
