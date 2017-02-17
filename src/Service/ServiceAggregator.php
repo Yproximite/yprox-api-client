@@ -49,6 +49,17 @@ class ServiceAggregator
     }
 
     /**
+     * @return CallTrackingService
+     */
+    public function callTracking(): CallTrackingService
+    {
+        /** @var CallTrackingService $service */
+        $service = $this->getService(CallTrackingService::class);
+
+        return $service;
+    }
+
+    /**
      * @return CompanyService
      */
     public function company(): CompanyService
