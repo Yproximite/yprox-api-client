@@ -8,8 +8,11 @@ use Http\Message\MessageFactory;
 use Psr\Http\Message\StreamInterface;
 use Http\Client\Exception\HttpException;
 use Http\Discovery\MessageFactoryDiscovery;
+use Http\Client\Exception\TransferException as HttpTransferException;
 
 use Yproximite\Api\Exception\LogicException;
+use Yproximite\Api\Exception\TransferException;
+use Yproximite\Api\Exception\AuthenficationException;
 use Yproximite\Api\Exception\InvalidResponseException;
 
 /**
@@ -192,7 +195,17 @@ class Client
 
         $request = $this->getMessageFactory()->createRequest($method, $uri, $headers, $body);
 
-        return (string) $this->getHttpClient()->sendRequest($request)->getBody();
+        try {
+            $response = $this->getHttpClient()->sendRequest($request);
+        } catch (HttpTransferException $e) {
+            throw new TransferException(
+                $e->getMessage(),
+                $request,
+                $e instanceof HttpException ? $e->getResponse() : null
+            );
+        }
+
+        return (string) $response->getBody();
     }
 
     /**
@@ -246,10 +259,14 @@ class Client
             throw new LogicException('The api key cannot be empty.');
         }
 
-        $data = $this->sendRequest('POST', '/login_check', ['api_key' => $this->apiKey], false);
+        try {
+            $data = $this->sendRequest('POST', '/login_check', ['api_key' => $this->apiKey], false);
+        } catch (TransferException $e) {
+            throw new AuthenficationException('Could not request a token.');
+        }
 
         if (!is_array($data) || !array_key_exists('token', $data)) {
-            throw new LogicException('Could not retreive a token.');
+            throw new AuthenficationException('Could not retreive a token.');
         }
 
         $this->apiToken = (string) $data['token'];
