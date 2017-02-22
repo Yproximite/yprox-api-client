@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace Yproximite\Api\Message;
 
+use Psr\Http\Message\StreamInterface;
+
 /**
  * Interface MessageInterface
  */
@@ -11,7 +13,7 @@ interface MessageInterface
     /**
      * Builds the message
      *
-     * @return array
+     * @return array|resource|string|StreamInterface|null
      */
-    public function build(): array;
+    public function build();
 }

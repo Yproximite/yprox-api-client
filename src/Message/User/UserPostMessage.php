@@ -13,7 +13,7 @@ class UserPostMessage extends AbstractUserMessage
     /**
      * {@inheritdoc}
      */
-    public function build(): array
+    public function build()
     {
         if (is_null($this->getPlainPassword())) {
             throw new LogicException('The plain password should be not null.');

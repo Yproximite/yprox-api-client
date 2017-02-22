@@ -160,7 +160,7 @@ abstract class AbstractUserMessage implements MessageInterface
     /**
      * {@inheritdoc}
      */
-    public function build(): array
+    public function build()
     {
         return [
             'firstName'     => $this->getFirstName(),

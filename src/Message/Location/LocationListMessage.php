@@ -16,8 +16,8 @@ class LocationListMessage implements MessageInterface
     /**
      * {@inheritdoc}
      */
-    public function build(): array
+    public function build()
     {
-        return [];
+        return null;
     }
 }

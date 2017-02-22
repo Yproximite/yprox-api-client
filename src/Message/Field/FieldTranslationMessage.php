@@ -52,7 +52,7 @@ class FieldTranslationMessage implements MessageInterface
     /**
      * {@inheritdoc}
      */
-    public function build(): array
+    public function build()
     {
         return [
             'value' => $this->getValue(),

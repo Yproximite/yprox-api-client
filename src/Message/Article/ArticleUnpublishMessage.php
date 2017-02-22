@@ -37,7 +37,7 @@ class ArticleUnpublishMessage implements MessageInterface
     /**
      * {@inheritdoc}
      */
-    public function build(): array
+    public function build()
     {
         return [
             'articles' => $this->getArticleIds(),

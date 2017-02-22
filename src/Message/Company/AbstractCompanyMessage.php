@@ -55,7 +55,7 @@ abstract class AbstractCompanyMessage implements MessageInterface
     /**
      * {@inheritdoc}
      */
-    public function build(): array
+    public function build()
     {
         return [
             'companyName' => $this->getName(),

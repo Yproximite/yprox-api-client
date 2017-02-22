@@ -298,7 +298,7 @@ abstract class AbstractLocationMessage implements MessageInterface
     /**
      * {@inheritdoc}
      */
-    public function build(): array
+    public function build()
     {
         return [
             'tel'                 => $this->getTel(),

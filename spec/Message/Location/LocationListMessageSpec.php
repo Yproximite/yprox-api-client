@@ -15,6 +15,6 @@ class LocationListMessageSpec extends ObjectBehavior
 
     function it_should_build()
     {
-        $this->build()->shouldReturn([]);
+        $this->build()->shouldReturn(null);
     }
 }

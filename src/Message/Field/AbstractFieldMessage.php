@@ -88,7 +88,7 @@ abstract class AbstractFieldMessage implements MessageInterface
     /**
      * {@inheritdoc}
      */
-    public function build(): array
+    public function build()
     {
         return [
             'token'        => $this->getToken(),

@@ -268,7 +268,7 @@ class SitePostMessage implements MessageInterface
     /**
      * {@inheritdoc}
      */
-    public function build(): array
+    public function build()
     {
         return [
             'title'                 => $this->getTitle(),

@@ -101,28 +101,28 @@ class Client
     /**
      * Sends a request
      *
-     * @param string $method
-     * @param string $path
-     * @param array  $data
-     * @param bool   $withAuthorization
+     * @param string                                     $method
+     * @param string                                     $path
+     * @param array|resource|string|StreamInterface|null $body
+     * @param bool                                       $withAuthorization
      *
      * @return array|null
      * @throws InvalidResponseException
      */
-    public function sendRequest(string $method, string $path, array $data = [], bool $withAuthorization = true)
+    public function sendRequest(string $method, string $path, $body = null, bool $withAuthorization = true)
     {
         $uri  = $this->getSafeBaseUrl();
         $uri .= $path;
 
-        $query = http_build_query($data);
-        $body  = null;
+        $rawData = is_array($body) ? http_build_query($body) : $body;
+        $body    = null;
 
         if (in_array($method, $this->getQueryMethods())) {
-            if ($query !== '') {
-                $uri .= '?'.$query;
+            if (is_string($rawData) && $rawData !== '') {
+                $uri .= '?'.$rawData;
             }
         } else {
-            $body = $query;
+            $body = $rawData;
         }
 
         $content = $withAuthorization

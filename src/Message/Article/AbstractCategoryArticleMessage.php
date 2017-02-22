@@ -58,7 +58,7 @@ abstract class AbstractCategoryArticleMessage implements MessageInterface
     /**
      * {@inheritdoc}
      */
-    public function build(): array
+    public function build()
     {
         return [
             'category' => $this->getCategoryId(),

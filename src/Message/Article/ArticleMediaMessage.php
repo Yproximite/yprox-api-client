@@ -70,7 +70,7 @@ class ArticleMediaMessage implements MessageInterface
     /**
      * {@inheritdoc}
      */
-    public function build(): array
+    public function build()
     {
         return [
             'media'        => $this->getMediaId(),

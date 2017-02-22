@@ -88,7 +88,7 @@ abstract class AbstractCategoryMessage implements MessageInterface
     /**
      * {@inheritdoc}
      */
-    public function build(): array
+    public function build()
     {
         return [
             'parentRootId' => $this->getParentRootId(),

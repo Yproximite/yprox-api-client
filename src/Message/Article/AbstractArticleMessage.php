@@ -162,7 +162,7 @@ abstract class AbstractArticleMessage implements MessageInterface
     /**
      * {@inheritdoc}
      */
-    public function build(): array
+    public function build()
     {
         return [
             'translations'    => Helper::buildMessages($this->getTranslations(), 'locale'),
