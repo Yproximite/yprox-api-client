@@ -12,10 +12,12 @@ use Http\Client\Exception\HttpException;
 use Http\Discovery\MessageFactoryDiscovery;
 
 use Yproximite\Api\Client\Client;
+use Yproximite\Api\Exception\TransferException;
+use Yproximite\Api\Exception\AuthenficationException;
+use Yproximite\Api\Exception\InvalidResponseException;
 
 class ClientSpec extends ObjectBehavior
 {
-    const API_KEY  = 'abcd';
     const BASE_URL = 'http://api.host';
 
     function it_is_initializable()
@@ -31,7 +33,7 @@ class ClientSpec extends ObjectBehavior
         StreamInterface $tokenStream
     ) {
         $tokenRequestUri  = sprintf('%s/login_check', self::BASE_URL);
-        $tokenRawRequest  = http_build_query(['api_key' => self::API_KEY]);
+        $tokenRawRequest  = http_build_query(['api_key' => 'abcd']);
         $tokenRawResponse = json_encode(['token' => 'efgh']);
 
         $messageFactory->createRequest('POST', $tokenRequestUri, [], $tokenRawRequest)->willReturn($tokenRequest);
@@ -40,7 +42,7 @@ class ClientSpec extends ObjectBehavior
         $tokenResponse->getBody()->willReturn($tokenStream);
         $tokenStream->__toString()->willReturn($tokenRawResponse);
 
-        $this->beConstructedWith($httpClient, self::API_KEY, self::BASE_URL, $messageFactory);
+        $this->beConstructedWith($httpClient, 'abcd', self::BASE_URL, $messageFactory);
     }
 
     function it_should_send_get_request(
@@ -179,7 +181,7 @@ class ClientSpec extends ObjectBehavior
 
         $httpClient->sendRequest($secondRequest)->shouldBeCalledTimes(2);
 
-        $this->shouldThrow(HttpException::class)->during('sendRequest', ['GET', '/second']);
+        $this->shouldThrow(TransferException::class)->during('sendRequest', ['GET', '/second']);
 
         $httpClient->sendRequest($tokenRequest)->shouldHaveBeenCalledTimes(2);
     }
@@ -208,8 +210,36 @@ class ClientSpec extends ObjectBehavior
 
         $httpClient->sendRequest($request)->shouldBeCalled();
 
-        $this->shouldThrow(HttpException::class)->during('sendRequest', ['GET', '/example']);
+        $this->shouldThrow(TransferException::class)->during('sendRequest', ['GET', '/example']);
 
         $httpClient->sendRequest($tokenRequest)->shouldHaveBeenCalledTimes(1);
+    }
+
+    function it_should_throw_authenfication_exception_on_bad_status_code(
+        HttpClient $httpClient,
+        RequestInterface $tokenRequest
+    ) {
+        $errorResponse = MessageFactoryDiscovery::find()->createResponse(400);
+        $httpException = HttpException::create($tokenRequest->getWrappedObject(), $errorResponse);
+
+        $httpClient->sendRequest($tokenRequest)->willThrow($httpException);
+
+        $this->shouldThrow(AuthenficationException::class)->during('sendRequest', ['GET', '/example']);
+    }
+
+    function it_should_throw_authenfication_exception_on_bad_response_body(StreamInterface $tokenStream)
+    {
+        $rawResponse = json_encode(['it' => 'is not a token']);
+
+        $tokenStream->__toString()->willReturn($rawResponse);
+
+        $this->shouldThrow(AuthenficationException::class)->during('sendRequest', ['GET', '/example']);
+    }
+
+    function it_should_throw_invalid_response_exception_on_broken_response_body(StreamInterface $tokenStream)
+    {
+        $tokenStream->__toString()->willReturn('it is not a json');
+
+        $this->shouldThrow(InvalidResponseException::class)->during('sendRequest', ['GET', '/example']);
     }
 }

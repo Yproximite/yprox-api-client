@@ -164,8 +164,8 @@ class Client
     {
         try {
             $content = $this->doSendRequest($method, $uri, $body);
-        } catch (HttpException $e) {
-            if ($e->getCode() === 401 && !$this->apiTokenFresh) {
+        } catch (TransferException $e) {
+            if ($e->getResponse() && $e->getResponse()->getStatusCode() === 401 && !$this->apiTokenFresh) {
                 $this->resetApiToken();
 
                 $content = $this->doSendRequest($method, $uri, $body);
