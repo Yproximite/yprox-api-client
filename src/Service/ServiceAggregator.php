@@ -93,6 +93,17 @@ class ServiceAggregator
     }
 
     /**
+     * @return MediaService
+     */
+    public function media(): MediaService
+    {
+        /** @var MediaService $service */
+        $service = $this->getService(MediaService::class);
+
+        return $service;
+    }
+
+    /**
      * @return SiteService
      */
     public function site(): SiteService
