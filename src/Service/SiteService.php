@@ -28,6 +28,23 @@ class SiteService extends AbstractService implements ServiceInterface
     }
 
     /**
+     * @param int $id
+     *
+     * @return Site
+     */
+    public function getSite(int $id): Site
+    {
+        $path = sprintf('sites/%d', $id);
+
+        $response = $this->getClient()->sendRequest('GET', $path);
+
+        /** @var Site $model */
+        $model = $this->getModelFactory()->create(Site::class, $response);
+
+        return $model;
+    }
+
+    /**
      * @param SitePostMessage $message
      *
      * @return Site

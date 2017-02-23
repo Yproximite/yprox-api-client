@@ -5,11 +5,11 @@ namespace spec\Yproximite\Api\Service;
 use PhpSpec\ObjectBehavior;
 
 use Yproximite\Api\Client\Client;
-use Yproximite\Api\Message\Site\PlatformChildrenListMessage;
 use Yproximite\Api\Model\Site\Site;
 use Yproximite\Api\Service\SiteService;
 use Yproximite\Api\Factory\ModelFactory;
 use Yproximite\Api\Message\Site\SitePostMessage;
+use Yproximite\Api\Message\Site\PlatformChildrenListMessage;
 
 class SiteServiceSpec extends ObjectBehavior
 {
@@ -34,6 +34,19 @@ class SiteServiceSpec extends ObjectBehavior
         $factory->createMany(Site::class, [])->willReturn([]);
 
         $this->getSites();
+    }
+
+    function it_should_get_site(Client $client, ModelFactory $factory, Site $site)
+    {
+        $method = 'GET';
+        $path   = 'sites/1';
+
+        $client->sendRequest($method, $path)->willReturn([]);
+        $client->sendRequest($method, $path)->shouldBeCalled();
+
+        $factory->create(Site::class, [])->willReturn($site);
+
+        $this->getSite(1);
     }
 
     function it_should_post_site(
