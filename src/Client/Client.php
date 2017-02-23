@@ -104,13 +104,19 @@ class Client
      * @param string                                     $method
      * @param string                                     $path
      * @param array|resource|string|StreamInterface|null $body
+     * @param array                                      $headers
      * @param bool                                       $withAuthorization
      *
      * @return array|null
      * @throws InvalidResponseException
      */
-    public function sendRequest(string $method, string $path, $body = null, bool $withAuthorization = true)
-    {
+    public function sendRequest(
+        string $method,
+        string $path,
+        $body = null,
+        array $headers = [],
+        bool $withAuthorization = true
+    ) {
         $uri  = $this->getSafeBaseUrl();
         $uri .= $path;
 
@@ -126,8 +132,8 @@ class Client
         }
 
         $content = $withAuthorization
-            ? $this->sendRequestWithAuthorization($method, $uri, $body)
-            : $this->doSendRequest($method, $uri, $body, false)
+            ? $this->sendRequestWithAuthorization($method, $uri, $body, $headers)
+            : $this->doSendRequest($method, $uri, $body, $headers, false)
         ;
 
         if (empty($content)) {
@@ -157,18 +163,19 @@ class Client
      * @param string                               $method
      * @param string                               $uri
      * @param resource|string|StreamInterface|null $body
+     * @param array                                $headers
      *
      * @return string
      */
-    private function sendRequestWithAuthorization(string $method, string $uri, $body): string
+    private function sendRequestWithAuthorization(string $method, string $uri, $body, array $headers): string
     {
         try {
-            $content = $this->doSendRequest($method, $uri, $body);
+            $content = $this->doSendRequest($method, $uri, $body, $headers);
         } catch (TransferException $e) {
             if ($e->getResponse() && $e->getResponse()->getStatusCode() === 401 && !$this->apiTokenFresh) {
                 $this->resetApiToken();
 
-                $content = $this->doSendRequest($method, $uri, $body);
+                $content = $this->doSendRequest($method, $uri, $body, $headers);
             } else {
                 throw $e;
             }
@@ -181,14 +188,18 @@ class Client
      * @param string                               $method
      * @param string                               $uri
      * @param resource|string|StreamInterface|null $body
+     * @param array                                $headers
      * @param bool                                 $withAuthorization
      *
      * @return string
      */
-    private function doSendRequest(string $method, string $uri, $body, bool $withAuthorization = true): string
-    {
-        $headers = [];
-
+    private function doSendRequest(
+        string $method,
+        string $uri,
+        $body,
+        array $headers,
+        bool $withAuthorization = true
+    ): string {
         if ($withAuthorization) {
             $headers['Authorization'] = $this->getAuthorizationHeader();
         }
@@ -260,7 +271,7 @@ class Client
         }
 
         try {
-            $data = $this->sendRequest('POST', '/login_check', ['api_key' => $this->apiKey], false);
+            $data = $this->sendRequest('POST', '/login_check', ['api_key' => $this->apiKey], [], false);
         } catch (TransferException $e) {
             throw new AuthenficationException('Could not request a token.');
         }
