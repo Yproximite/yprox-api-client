@@ -5,12 +5,14 @@ namespace Yproximite\Api\Client;
 
 use Http\Client\HttpClient;
 use Http\Message\MessageFactory;
+use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\StreamInterface;
 use Http\Client\Exception\HttpException;
 use Http\Discovery\MessageFactoryDiscovery;
 use Http\Client\Exception\TransferException as HttpTransferException;
 
 use Yproximite\Api\Exception\LogicException;
+use Yproximite\Api\Exception\RequestException;
 use Yproximite\Api\Exception\TransferException;
 use Yproximite\Api\Exception\AuthenficationException;
 use Yproximite\Api\Exception\InvalidResponseException;
@@ -61,8 +63,6 @@ class Client
      * @param string|null         $apiKey
      * @param string|null         $baseUrl
      * @param MessageFactory|null $messageFactory
-     *
-     * @throws LogicException
      */
     public function __construct(
         HttpClient $httpClient,
@@ -70,10 +70,6 @@ class Client
         string $baseUrl = null,
         MessageFactory $messageFactory = null
     ) {
-        if (empty($baseUrl)) {
-            throw new LogicException('The base url cannot be empty.');
-        }
-
         $this->httpClient     = $httpClient;
         $this->messageFactory = $messageFactory;
         $this->apiKey         = $apiKey;
@@ -105,20 +101,50 @@ class Client
      * @param string                                     $path
      * @param array|resource|string|StreamInterface|null $body
      * @param array                                      $headers
-     * @param bool                                       $withAuthorization
      *
-     * @return array|null
+     * @return mixed
+     * @throws TransferException
      * @throws InvalidResponseException
+     * @throws AuthenficationException
      */
-    public function sendRequest(
+    public function sendRequest(string $method, string $path, $body = null, array $headers = [])
+    {
+        $request = $this->createRequest($method, $path, $body, $headers);
+
+        try {
+            $content = $this->doSendRequest($request);
+        } catch (InvalidResponseException $e) {
+            if ($e->getResponse()->getStatusCode() === 401 && !$this->apiTokenFresh) {
+                $this->resetApiToken();
+
+                $request = $this->createRequest($method, $path, $body, $headers);
+                $content = $this->doSendRequest($request);
+            } else {
+                throw $e;
+            }
+        }
+
+        return $content;
+    }
+
+    /**
+     * @param string $method
+     * @param string $path
+     * @param null   $body
+     * @param array  $headers
+     * @param bool   $withAuthorization
+     *
+     * @return RequestInterface
+     */
+    private function createRequest(
         string $method,
         string $path,
         $body = null,
         array $headers = [],
         bool $withAuthorization = true
-    ) {
+    ): RequestInterface {
         $uri  = $this->getSafeBaseUrl();
-        $uri .= $path;
+        $uri .= '/'.$path;
 
         $rawData = is_array($body) ? http_build_query($body) : $body;
         $body    = null;
@@ -131,22 +157,13 @@ class Client
             $body = $rawData;
         }
 
-        $content = $withAuthorization
-            ? $this->sendRequestWithAuthorization($method, $uri, $body, $headers)
-            : $this->doSendRequest($method, $uri, $body, $headers, false)
-        ;
+        $baseHeaders = ['Content-Type' => 'application/x-www-form-urlencoded'];
 
-        if (empty($content)) {
-            return null;
+        if ($withAuthorization) {
+            $baseHeaders['Authorization'] = $this->getAuthorizationHeader();
         }
 
-        $data = json_decode($content, true);
-
-        if (json_last_error() !== JSON_ERROR_NONE) {
-            throw new InvalidResponseException(sprintf('Could not decode the response of "%s %s".', $method, $path));
-        }
-
-        return $data;
+        return $this->getMessageFactory()->createRequest($method, $uri, $headers + $baseHeaders, $body);
     }
 
     /**
@@ -158,54 +175,12 @@ class Client
     }
 
     /**
-     * Sends a request with authorization and tries to renew the api token in case of error of authentication.
+     * @param RequestInterface $request
      *
-     * @param string                               $method
-     * @param string                               $uri
-     * @param resource|string|StreamInterface|null $body
-     * @param array                                $headers
-     *
-     * @return string
+     * @return mixed
      */
-    private function sendRequestWithAuthorization(string $method, string $uri, $body, array $headers): string
+    private function doSendRequest(RequestInterface $request)
     {
-        try {
-            $content = $this->doSendRequest($method, $uri, $body, $headers);
-        } catch (TransferException $e) {
-            if ($e->getResponse() && $e->getResponse()->getStatusCode() === 401 && !$this->apiTokenFresh) {
-                $this->resetApiToken();
-
-                $content = $this->doSendRequest($method, $uri, $body, $headers);
-            } else {
-                throw $e;
-            }
-        }
-
-        return $content;
-    }
-
-    /**
-     * @param string                               $method
-     * @param string                               $uri
-     * @param resource|string|StreamInterface|null $body
-     * @param array                                $headers
-     * @param bool                                 $withAuthorization
-     *
-     * @return string
-     */
-    private function doSendRequest(
-        string $method,
-        string $uri,
-        $body,
-        array $headers,
-        bool $withAuthorization = true
-    ): string {
-        if ($withAuthorization) {
-            $headers['Authorization'] = $this->getAuthorizationHeader();
-        }
-
-        $request = $this->getMessageFactory()->createRequest($method, $uri, $headers, $body);
-
         try {
             $response = $this->getHttpClient()->sendRequest($request);
         } catch (HttpTransferException $e) {
@@ -216,7 +191,23 @@ class Client
             );
         }
 
-        return (string) $response->getBody();
+        if ($response->getStatusCode() >= 400) {
+            throw new InvalidResponseException('Bad response status code.', $request, $response);
+        }
+
+        $rawData = (string) $response->getBody();
+
+        if (empty($rawData)) {
+            return null;
+        }
+
+        $data = json_decode($rawData, true);
+
+        if (json_last_error() !== JSON_ERROR_NONE) {
+            throw new InvalidResponseException('Could not decode the response.', $request, $response);
+        }
+
+        return $data;
     }
 
     /**
@@ -251,7 +242,6 @@ class Client
 
     /**
      * @return string
-     * @throws LogicException
      */
     private function getApiToken(): string
     {
@@ -270,9 +260,11 @@ class Client
             throw new LogicException('The api key cannot be empty.');
         }
 
+        $request = $this->createRequest('POST', 'login_check', ['api_key' => $this->apiKey], [], false);
+
         try {
-            $data = $this->sendRequest('POST', '/login_check', ['api_key' => $this->apiKey], [], false);
-        } catch (TransferException $e) {
+            $data = $this->doSendRequest($request);
+        } catch (RequestException $e) {
             throw new AuthenficationException('Could not request a token.');
         }
 

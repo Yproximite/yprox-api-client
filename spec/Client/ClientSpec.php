@@ -32,11 +32,12 @@ class ClientSpec extends ObjectBehavior
         ResponseInterface $tokenResponse,
         StreamInterface $tokenStream
     ) {
+        $tokenHeaders     = ['Content-Type' => 'application/x-www-form-urlencoded'];
         $tokenRequestUri  = sprintf('%s/login_check', self::BASE_URL);
         $tokenRawRequest  = http_build_query(['api_key' => 'abcd']);
         $tokenRawResponse = json_encode(['token' => 'efgh']);
 
-        $messageFactory->createRequest('POST', $tokenRequestUri, [], $tokenRawRequest)->willReturn($tokenRequest);
+        $messageFactory->createRequest('POST', $tokenRequestUri, $tokenHeaders, $tokenRawRequest)->willReturn($tokenRequest);
         $httpClient->sendRequest($tokenRequest)->willReturn($tokenResponse);
         $tokenResponse->getStatusCode()->willReturn(200);
         $tokenResponse->getBody()->willReturn($tokenStream);
@@ -52,11 +53,12 @@ class ClientSpec extends ObjectBehavior
         ResponseInterface $response,
         StreamInterface $stream
     ) {
+        $headers     = ['Content-Type' => 'application/x-www-form-urlencoded', 'Authorization' => 'Bearer efgh'];
         $rawQuery    = http_build_query(['query' => 'test']);
         $requestUri  = sprintf('%s/example?%s', self::BASE_URL, $rawQuery);
         $rawResponse = json_encode(['foo' => 'bar']);
 
-        $messageFactory->createRequest('GET', $requestUri, ['Authorization' => 'Bearer efgh'], null)->willReturn($request);
+        $messageFactory->createRequest('GET', $requestUri, $headers, null)->willReturn($request);
         $httpClient->sendRequest($request)->willReturn($response);
         $response->getStatusCode()->willReturn(200);
         $response->getBody()->willReturn($stream);
@@ -64,7 +66,7 @@ class ClientSpec extends ObjectBehavior
 
         $httpClient->sendRequest($request)->shouldBeCalled();
 
-        $this->sendRequest('GET', '/example', ['query' => 'test']);
+        $this->sendRequest('GET', 'example', ['query' => 'test']);
     }
 
     function it_should_send_post_request(
@@ -74,11 +76,12 @@ class ClientSpec extends ObjectBehavior
         ResponseInterface $response,
         StreamInterface $stream
     ) {
+        $headers     = ['Content-Type' => 'application/x-www-form-urlencoded', 'Authorization' => 'Bearer efgh'];
         $requestUri  = sprintf('%s/example', self::BASE_URL);
         $rawRequest  = http_build_query(['query' => 'test']);
         $rawResponse = json_encode(['foo' => 'bar']);
 
-        $messageFactory->createRequest('POST', $requestUri, ['Authorization' => 'Bearer efgh'], $rawRequest)->willReturn($request);
+        $messageFactory->createRequest('POST', $requestUri, $headers, $rawRequest)->willReturn($request);
         $httpClient->sendRequest($request)->willReturn($response);
         $response->getStatusCode()->willReturn(200);
         $response->getBody()->willReturn($stream);
@@ -86,7 +89,7 @@ class ClientSpec extends ObjectBehavior
 
         $httpClient->sendRequest($request)->shouldBeCalled();
 
-        $this->sendRequest('POST', '/example', ['query' => 'test']);
+        $this->sendRequest('POST', 'example', ['query' => 'test']);
     }
 
     function it_should_ask_for_api_token_once(
@@ -101,10 +104,11 @@ class ClientSpec extends ObjectBehavior
         RequestInterface $tokenRequest
     ) {
         // first request
+        $firstHeaders     = ['Content-Type' => 'application/x-www-form-urlencoded', 'Authorization' => 'Bearer efgh'];
         $firstRequestUri  = sprintf('%s/first', self::BASE_URL);
         $firstRawResponse = json_encode(['foo' => 'bar']);
 
-        $messageFactory->createRequest('GET', $firstRequestUri, ['Authorization' => 'Bearer efgh'], null)->willReturn($firstRequest);
+        $messageFactory->createRequest('GET', $firstRequestUri, $firstHeaders, null)->willReturn($firstRequest);
         $httpClient->sendRequest($firstRequest)->willReturn($firstResponse);
         $firstResponse->getStatusCode()->willReturn(200);
         $firstResponse->getBody()->willReturn($firstStream);
@@ -112,13 +116,14 @@ class ClientSpec extends ObjectBehavior
 
         $httpClient->sendRequest($firstRequest)->shouldBeCalled();
 
-        $this->sendRequest('GET', '/first');
+        $this->sendRequest('GET', 'first');
 
         // second request
+        $secondHeaders     = ['Content-Type' => 'application/x-www-form-urlencoded', 'Authorization' => 'Bearer efgh'];
         $secondRequestUri  = sprintf('%s/second', self::BASE_URL);
         $secondRawResponse = json_encode(['foo' => 'bar']);
 
-        $messageFactory->createRequest('GET', $secondRequestUri, ['Authorization' => 'Bearer efgh'], null)->willReturn($secondRequest);
+        $messageFactory->createRequest('GET', $secondRequestUri, $secondHeaders, null)->willReturn($secondRequest);
         $httpClient->sendRequest($secondRequest)->willReturn($secondResponse);
         $secondResponse->getStatusCode()->willReturn(200);
         $secondResponse->getBody()->willReturn($secondStream);
@@ -126,7 +131,7 @@ class ClientSpec extends ObjectBehavior
 
         $httpClient->sendRequest($secondRequest)->shouldBeCalled();
 
-        $this->sendRequest('GET', '/second');
+        $this->sendRequest('GET', 'second');
 
         $httpClient->sendRequest($tokenRequest)->shouldHaveBeenCalledTimes(1);
     }
@@ -143,10 +148,11 @@ class ClientSpec extends ObjectBehavior
         RequestInterface $tokenRequest
     ) {
         // first request
+        $firstHeaders     = ['Content-Type' => 'application/x-www-form-urlencoded', 'Authorization' => 'Bearer efgh'];
         $firstRequestUri  = sprintf('%s/first', self::BASE_URL);
         $firstRawResponse = json_encode(['foo' => 'bar']);
 
-        $messageFactory->createRequest('GET', $firstRequestUri, ['Authorization' => 'Bearer efgh'], null)->willReturn($firstRequest);
+        $messageFactory->createRequest('GET', $firstRequestUri, $firstHeaders, null)->willReturn($firstRequest);
         $httpClient->sendRequest($firstRequest)->willReturn($firstResponse);
         $firstResponse->getStatusCode()->willReturn(200);
         $firstResponse->getBody()->willReturn($firstStream);
@@ -154,26 +160,25 @@ class ClientSpec extends ObjectBehavior
 
         $httpClient->sendRequest($firstRequest)->shouldBeCalled();
 
-        $this->sendRequest('GET', '/first');
+        $this->sendRequest('GET', 'first');
 
         // second request
+        $secondHeaders     = ['Content-Type' => 'application/x-www-form-urlencoded', 'Authorization' => 'Bearer efgh'];
         $secondRequestUri  = sprintf('%s/second', self::BASE_URL);
         $secondRawResponse = json_encode(['foo' => 'bar']);
 
-        $messageFactory->createRequest('GET', $secondRequestUri, ['Authorization' => 'Bearer efgh'], null)->willReturn($secondRequest);
+        $messageFactory->createRequest('GET', $secondRequestUri, $secondHeaders, null)->willReturn($secondRequest);
         $secondResponse->getStatusCode()->willReturn(200);
         $secondResponse->getBody()->willReturn($secondStream);
         $secondStream->__toString()->willReturn($secondRawResponse);
 
         $secondRequestCounter = 0;
 
-        $httpClient->sendRequest($secondRequest)->will(function ($args) use ($secondRequestCounter, $secondResponse) {
+        $httpClient->sendRequest($secondRequest)->will(function () use ($secondRequestCounter, $secondResponse) {
             $secondRequestCounter ++;
 
             if ($secondRequestCounter === 1) {
-                $errorResponse = MessageFactoryDiscovery::find()->createResponse(401);
-
-                throw HttpException::create($args[0], $errorResponse);
+                return MessageFactoryDiscovery::find()->createResponse(401);
             }
 
             return $secondResponse;
@@ -181,7 +186,7 @@ class ClientSpec extends ObjectBehavior
 
         $httpClient->sendRequest($secondRequest)->shouldBeCalledTimes(2);
 
-        $this->shouldThrow(TransferException::class)->during('sendRequest', ['GET', '/second']);
+        $this->shouldThrow(InvalidResponseException::class)->during('sendRequest', ['GET', 'second']);
 
         $httpClient->sendRequest($tokenRequest)->shouldHaveBeenCalledTimes(2);
     }
@@ -194,37 +199,98 @@ class ClientSpec extends ObjectBehavior
         StreamInterface $stream,
         RequestInterface $tokenRequest
     ) {
+        $headers     = ['Content-Type' => 'application/x-www-form-urlencoded', 'Authorization' => 'Bearer efgh'];
         $requestUri  = sprintf('%s/example', self::BASE_URL);
         $rawResponse = json_encode(['foo' => 'bar']);
 
-        $messageFactory->createRequest('GET', $requestUri, ['Authorization' => 'Bearer efgh'], null)->willReturn($request);
-        $response->getStatusCode()->willReturn(200);
-        $response->getBody()->willReturn($stream);
+        $messageFactory->createRequest('GET', $requestUri, $headers, null)->willReturn($request);
+        $httpClient->sendRequest($request)->willReturn($response);
+        $response->getStatusCode()->willReturn(401);
         $stream->__toString()->willReturn($rawResponse);
-
-        $httpClient->sendRequest($request)->will(function ($args) {
-            $errorResponse = MessageFactoryDiscovery::find()->createResponse(401);
-
-            throw HttpException::create($args[0], $errorResponse);
-        });
 
         $httpClient->sendRequest($request)->shouldBeCalled();
 
-        $this->shouldThrow(TransferException::class)->during('sendRequest', ['GET', '/example']);
+        $this->shouldThrow(InvalidResponseException::class)->during('sendRequest', ['GET', 'example']);
 
         $httpClient->sendRequest($tokenRequest)->shouldHaveBeenCalledTimes(1);
     }
 
-    function it_should_throw_authenfication_exception_on_bad_status_code(
+    function it_should_throw_transfer_exception_on_http_exception(
+        HttpClient $httpClient,
+        MessageFactory $messageFactory,
+        RequestInterface $request
+    ) {
+        $headers     = ['Content-Type' => 'application/x-www-form-urlencoded', 'Authorization' => 'Bearer efgh'];
+        $requestUri  = sprintf('%s/example', self::BASE_URL);
+
+        $errorResponse = MessageFactoryDiscovery::find()->createResponse(500);
+        $httpException = HttpException::create($request->getWrappedObject(), $errorResponse);
+
+        $messageFactory->createRequest('GET', $requestUri, $headers, null)->willReturn($request);
+        $httpClient->sendRequest($request)->willThrow($httpException);
+
+        $this->shouldThrow(TransferException::class)->during('sendRequest', ['GET', 'example']);
+    }
+
+    function it_should_throw_invalid_response_exception_on_bad_status_code(
+        HttpClient $httpClient,
+        MessageFactory $messageFactory,
+        RequestInterface $request,
+        ResponseInterface $response
+    ) {
+        $headers     = ['Content-Type' => 'application/x-www-form-urlencoded', 'Authorization' => 'Bearer efgh'];
+        $requestUri  = sprintf('%s/example', self::BASE_URL);
+
+        $messageFactory->createRequest('GET', $requestUri, $headers, null)->willReturn($request);
+        $httpClient->sendRequest($request)->willReturn($response);
+        $response->getStatusCode()->willReturn(400);
+
+        $this->shouldThrow(InvalidResponseException::class)->during('sendRequest', ['GET', 'example']);
+    }
+
+    function it_should_throw_invalid_response_exception_on_broken_response_body(
+        HttpClient $httpClient,
+        MessageFactory $messageFactory,
+        RequestInterface $request,
+        ResponseInterface $response,
+        StreamInterface $stream
+    ) {
+        $headers     = ['Content-Type' => 'application/x-www-form-urlencoded', 'Authorization' => 'Bearer efgh'];
+        $requestUri  = sprintf('%s/example', self::BASE_URL);
+
+        $messageFactory->createRequest('GET', $requestUri, $headers, null)->willReturn($request);
+        $httpClient->sendRequest($request)->willReturn($response);
+        $response->getStatusCode()->willReturn(200);
+        $response->getBody()->willReturn($stream);
+        $stream->__toString()->willReturn('it is not a json');
+
+        $this->shouldThrow(InvalidResponseException::class)->during('sendRequest', ['GET', 'example']);
+    }
+
+    function it_should_throw_authenfication_exception_on_http_exception(
         HttpClient $httpClient,
         RequestInterface $tokenRequest
     ) {
-        $errorResponse = MessageFactoryDiscovery::find()->createResponse(400);
+        $errorResponse = MessageFactoryDiscovery::find()->createResponse(500);
         $httpException = HttpException::create($tokenRequest->getWrappedObject(), $errorResponse);
 
         $httpClient->sendRequest($tokenRequest)->willThrow($httpException);
 
-        $this->shouldThrow(AuthenficationException::class)->during('sendRequest', ['GET', '/example']);
+        $this->shouldThrow(AuthenficationException::class)->during('sendRequest', ['GET', 'example']);
+    }
+
+    function it_should_throw_authenfication_exception_on_bad_status_code(ResponseInterface $tokenResponse)
+    {
+        $tokenResponse->getStatusCode()->willReturn(400);
+
+        $this->shouldThrow(AuthenficationException::class)->during('sendRequest', ['GET', 'example']);
+    }
+
+    function it_should_throw_authenfication_exception_on_broken_response_body(StreamInterface $tokenStream)
+    {
+        $tokenStream->__toString()->willReturn('it is not a json');
+
+        $this->shouldThrow(AuthenficationException::class)->during('sendRequest', ['GET', 'example']);
     }
 
     function it_should_throw_authenfication_exception_on_bad_response_body(StreamInterface $tokenStream)
@@ -233,13 +299,6 @@ class ClientSpec extends ObjectBehavior
 
         $tokenStream->__toString()->willReturn($rawResponse);
 
-        $this->shouldThrow(AuthenficationException::class)->during('sendRequest', ['GET', '/example']);
-    }
-
-    function it_should_throw_invalid_response_exception_on_broken_response_body(StreamInterface $tokenStream)
-    {
-        $tokenStream->__toString()->willReturn('it is not a json');
-
-        $this->shouldThrow(InvalidResponseException::class)->during('sendRequest', ['GET', '/example']);
+        $this->shouldThrow(AuthenficationException::class)->during('sendRequest', ['GET', 'example']);
     }
 }

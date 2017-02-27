@@ -9,13 +9,8 @@ use Psr\Http\Message\ResponseInterface;
 /**
  * Class TransferException
  */
-class TransferException extends \RuntimeException implements ExceptionInterface
+class TransferException extends RequestException
 {
-    /**
-     * @var RequestInterface|null
-     */
-    private $request;
-
     /**
      * @var ResponseInterface|null
      */
@@ -23,32 +18,23 @@ class TransferException extends \RuntimeException implements ExceptionInterface
 
     /**
      * @param string                 $message
-     * @param RequestInterface|null  $request
+     * @param RequestInterface       $request
      * @param ResponseInterface|null $response
      * @param \Exception|null        $previous
      */
     public function __construct(
         string $message,
-        RequestInterface $request = null,
+        RequestInterface $request,
         ResponseInterface $response = null,
         \Exception $previous = null
     ) {
-        parent::__construct($message, 0, $previous);
+        parent::__construct($message, $request, $previous);
 
-        $this->request  = $request;
         $this->response = $response;
     }
 
     /**
-     * @return null|RequestInterface
-     */
-    public function getRequest()
-    {
-        return $this->request;
-    }
-
-    /**
-     * @return null|ResponseInterface
+     * @return ResponseInterface|null
      */
     public function getResponse()
     {
