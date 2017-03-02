@@ -63,6 +63,16 @@ class SiteService extends AbstractService implements ServiceInterface
     }
 
     /**
+     * @param int $id
+     */
+    public function deleteSite(int $id)
+    {
+        $path = sprintf('sites/%d', $id);
+
+        $this->getClient()->sendRequest('DELETE', $path);
+    }
+
+    /**
      * @param PlatformChildrenListMessage $message
      *
      * @return Site[]

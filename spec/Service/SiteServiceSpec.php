@@ -70,6 +70,16 @@ class SiteServiceSpec extends ObjectBehavior
         $this->postSite($message);
     }
 
+    function it_should_delete_site(Client $client)
+    {
+        $method = 'DELETE';
+        $path   = 'sites/1';
+
+        $client->sendRequest($method, $path)->shouldBeCalled();
+
+        $this->deleteSite(1);
+    }
+
     function it_should_get_platform_children(
         Client $client,
         ModelFactory $factory,
