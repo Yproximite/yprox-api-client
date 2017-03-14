@@ -8,5 +8,5 @@ Client library for yProx API
 * [Architecture](./doc/architecture.md)
 * [Usage](./doc/usage.md)
 * [Creating an endpoint](./doc/creating_endpoint.md)
-* [Updating](./doc/creating_updating.md)
+* [Updating](./doc/updating.md)
 * [Naming conventions](./doc/naming.md)
