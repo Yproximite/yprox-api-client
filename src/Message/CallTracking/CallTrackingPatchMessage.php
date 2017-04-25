@@ -36,7 +36,7 @@ class CallTrackingPatchMessage extends AbstractCallTrackingMessage
     public function build()
     {
         return [
-            'callerId' => $this->hasCallerId(),
+            'callerId' => intval($this->hasCallerId()),
         ];
     }
 }
