@@ -17,7 +17,7 @@ class CallTrackingPostMessage extends AbstractCallTrackingMessage
             'name'             => $this->getName(),
             'phoneDid'         => $this->getPhoneDid(),
             'phoneDestination' => $this->getPhoneDestination(),
-            'callerId'         => $this->hasCallerId(),
+            'callerId'         => intval($this->hasCallerId()),
         ];
     }
 }
