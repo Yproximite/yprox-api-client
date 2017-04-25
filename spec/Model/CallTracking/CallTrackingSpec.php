@@ -20,6 +20,7 @@ class CallTrackingSpec extends ObjectBehavior
             'name'             => 'Simple call',
             'phoneDid'         => '+1 343 553 22 33',
             'phoneDestination' => '+1 233 211 21 77',
+            'callerId'         => 1,
         ];
 
         $this->beConstructedWith($data);
@@ -31,5 +32,6 @@ class CallTrackingSpec extends ObjectBehavior
         $this->getName()->shouldReturn('Simple call');
         $this->getPhoneDid()->shouldReturn('+1 343 553 22 33');
         $this->getPhoneDestination()->shouldReturn('+1 233 211 21 77');
+        $this->hasCallerId()->shouldReturn(true);
     }
 }

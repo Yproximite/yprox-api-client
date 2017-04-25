@@ -9,6 +9,7 @@ use Yproximite\Api\Model\CallTracking\CallTracking;
 use Yproximite\Api\Service\CallTrackingService;
 use Yproximite\Api\Factory\ModelFactory;
 use Yproximite\Api\Message\CallTracking\CallTrackingPostMessage;
+use Yproximite\Api\Message\CallTracking\CallTrackingPatchMessage;
 
 class CallTrackingServiceSpec extends ObjectBehavior
 {
@@ -41,5 +42,26 @@ class CallTrackingServiceSpec extends ObjectBehavior
         $factory->create(CallTracking::class, [])->willReturn($callTracking);
 
         $this->postCallTracking($message);
+    }
+
+    function it_should_patch_call_tracking(
+        Client $client,
+        ModelFactory $factory,
+        CallTrackingPatchMessage $message,
+        CallTracking $callTracking
+    ) {
+        $message->getSiteId()->willReturn(1);
+        $message->build()->willReturn([]);
+
+        $method = 'PATCH';
+        $path   = 'sites/1/call_trackings/update';
+        $data   = ['api_call_tracking_edit' => []];
+
+        $client->sendRequest($method, $path, $data)->willReturn([]);
+        $client->sendRequest($method, $path, $data)->shouldBeCalled();
+
+        $factory->create(CallTracking::class, [])->willReturn($callTracking);
+
+        $this->patchCallTracking($message);
     }
 }

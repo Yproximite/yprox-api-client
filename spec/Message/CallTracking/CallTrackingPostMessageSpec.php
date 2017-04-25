@@ -17,11 +17,13 @@ class CallTrackingPostMessageSpec extends ObjectBehavior
         $this->setName('Simple call');
         $this->setPhoneDid('+1 123 233 99 91');
         $this->setPhoneDestination('+1 921 339 44 77');
+        $this->setCallerId(true);
 
         $data = [
             'name'             => 'Simple call',
             'phoneDid'         => '+1 123 233 99 91',
             'phoneDestination' => '+1 921 339 44 77',
+            'callerId'         => 1,
         ];
 
         $this->build()->shouldReturn($data);
