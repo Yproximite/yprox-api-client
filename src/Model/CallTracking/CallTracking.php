@@ -31,6 +31,11 @@ class CallTracking implements ModelInterface
     private $phoneDestination;
 
     /**
+     * @var bool
+     */
+    private $callerId;
+
+    /**
      * CallTracking constructor.
      *
      * @param array $data
@@ -41,6 +46,7 @@ class CallTracking implements ModelInterface
         $this->name             = (string) $data['name'];
         $this->phoneDid         = (string) $data['phoneDid'];
         $this->phoneDestination = (string) $data['phoneDestination'];
+        $this->callerId         = (bool) $data['callerId'];
     }
 
     /**
@@ -73,5 +79,13 @@ class CallTracking implements ModelInterface
     public function getPhoneDestination(): string
     {
         return $this->phoneDestination;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function hasCallerId(): bool
+    {
+        return $this->callerId;
     }
 }
