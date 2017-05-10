@@ -5,6 +5,7 @@ namespace Yproximite\Api\Service;
 
 use Yproximite\Api\Model\Site\Site;
 use Yproximite\Api\Message\Site\SitePostMessage;
+use Yproximite\Api\Message\Site\SitePatchMessage;
 use Yproximite\Api\Message\Site\PlatformChildrenListMessage;
 
 /**
@@ -55,6 +56,24 @@ class SiteService extends AbstractService implements ServiceInterface
         $data = ['api_site' => $message->build()];
 
         $response = $this->getClient()->sendRequest('POST', $path, $data);
+
+        /** @var Site $model */
+        $model = $this->getModelFactory()->create(Site::class, $response);
+
+        return $model;
+    }
+
+    /**
+     * @param SitePatchMessage $message
+     *
+     * @return Site
+     */
+    public function patchSite(SitePatchMessage $message): Site
+    {
+        $path = sprintf('sites/%d', $message->getId());
+        $data = ['api_site' => $message->build()];
+
+        $response = $this->getClient()->sendRequest('PATCH', $path, $data);
 
         /** @var Site $model */
         $model = $this->getModelFactory()->create(Site::class, $response);
