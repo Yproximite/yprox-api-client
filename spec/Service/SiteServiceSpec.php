@@ -9,6 +9,7 @@ use Yproximite\Api\Model\Site\Site;
 use Yproximite\Api\Service\SiteService;
 use Yproximite\Api\Factory\ModelFactory;
 use Yproximite\Api\Message\Site\SitePostMessage;
+use Yproximite\Api\Message\Site\SitePatchMessage;
 use Yproximite\Api\Message\Site\PlatformChildrenListMessage;
 
 class SiteServiceSpec extends ObjectBehavior
@@ -68,6 +69,27 @@ class SiteServiceSpec extends ObjectBehavior
         $factory->create(Site::class, [])->willReturn($site);
 
         $this->postSite($message);
+    }
+
+    function it_should_patch_site(
+        Client $client,
+        ModelFactory $factory,
+        SitePatchMessage $message,
+        Site $site
+    ) {
+        $message->getId()->willReturn(1);
+        $message->build()->willReturn([]);
+
+        $method = 'PATCH';
+        $path   = 'sites/1';
+        $data   = ['api_site' => []];
+
+        $client->sendRequest($method, $path, $data)->willReturn([]);
+        $client->sendRequest($method, $path, $data)->shouldBeCalled();
+
+        $factory->create(Site::class, [])->willReturn($site);
+
+        $this->patchSite($message);
     }
 
     function it_should_delete_site(Client $client)
