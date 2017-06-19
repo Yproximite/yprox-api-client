@@ -33,7 +33,7 @@ class TeamWorkerServiceSpec extends ObjectBehavior
         $message->build()->willReturn([]);
 
         $method = 'POST';
-        $path   = 'sites/1/team_workers';
+        $path   = 'sites/1/teams/workers';
         $data   = ['api_team_worker' => []];
 
         $client->sendRequest($method, $path, $data)->willReturn([]);
@@ -55,7 +55,7 @@ class TeamWorkerServiceSpec extends ObjectBehavior
         $message->build()->willReturn([]);
 
         $method = 'PATCH';
-        $path   = 'sites/1/team_workers/2';
+        $path   = 'sites/1/teams/2/worker';
         $data   = ['api_team_worker' => []];
 
         $client->sendRequest($method, $path, $data)->willReturn([]);

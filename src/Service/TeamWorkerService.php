@@ -19,7 +19,7 @@ class TeamWorkerService extends AbstractService implements ServiceInterface
      */
     public function postTeamWorker(TeamWorkerPostMessage $message): TeamWorker
     {
-        $path = sprintf('sites/%d/team_workers', $message->getSiteId());
+        $path = sprintf('sites/%d/teams/workers', $message->getSiteId());
         $data = ['api_team_worker' => $message->build()];
 
         $response = $this->getClient()->sendRequest('POST', $path, $data);
@@ -37,7 +37,7 @@ class TeamWorkerService extends AbstractService implements ServiceInterface
      */
     public function patchTeamWorker(TeamWorkerPatchMessage $message): TeamWorker
     {
-        $path = sprintf('sites/%d/team_workers/%d', $message->getSiteId(), $message->getId());
+        $path = sprintf('sites/%d/teams/%d/worker', $message->getSiteId(), $message->getId());
         $data = ['api_team_worker' => $message->build()];
 
         $response = $this->getClient()->sendRequest('PATCH', $path, $data);
