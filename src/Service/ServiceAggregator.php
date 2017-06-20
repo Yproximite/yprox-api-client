@@ -126,6 +126,17 @@ class ServiceAggregator
     }
 
     /**
+     * @return TeamWorkerService
+     */
+    public function teamWorker(): TeamWorkerService
+    {
+        /** @var TeamWorkerService $service */
+        $service = $this->getService(TeamWorkerService::class);
+
+        return $service;
+    }
+
+    /**
      * @param string $class
      *
      * @return ServiceInterface
