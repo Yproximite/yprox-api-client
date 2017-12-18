@@ -32,6 +32,11 @@ class Category implements ModelInterface
     private $dataParentId;
 
     /**
+     * @var int|null
+     */
+    private $parentRootId;
+
+    /**
      * @var \DateTime
      */
     private $createdAt;
@@ -61,6 +66,7 @@ class Category implements ModelInterface
         $this->translations      = $translations;
         $this->enabled           = (bool) $data['enabled'];
         $this->dataParentId      = !empty($data['dataParent']) ? (int) $data['dataParent'] : null;
+        $this->parentRootId      = (int) $data['parentRootId'];
         $this->createdAt         = new \DateTime($data['createdAt']['date']);
         $this->updatedAt         = new \DateTime($data['updatedAt']['date']);
         $this->inheritanceStatus = (string) $data['inheritance_status'];
@@ -93,7 +99,7 @@ class Category implements ModelInterface
     /**
      * @return int|null
      */
-    public function getDataParentId()
+    public function getDataParentId(): ?int
     {
         return $this->dataParentId;
     }
@@ -122,5 +128,21 @@ class Category implements ModelInterface
     public function getInheritanceStatus(): string
     {
         return $this->inheritanceStatus;
+    }
+
+    /**
+     * @return int|null
+     */
+    public function getParentRootId(): ?int
+    {
+        return $this->parentRootId;
+    }
+
+    /**
+     * @param int|null $parentRootId
+     */
+    public function setParentRootId($parentRootId)
+    {
+        $this->parentRootId = $parentRootId;
     }
 }
