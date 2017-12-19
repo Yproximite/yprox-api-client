@@ -27,6 +27,7 @@ class CategorySpec extends ObjectBehavior
             'translations'       => ['en' => $translation],
             'enabled'            => 1,
             'dataParent'         => '11',
+            'parentRootId'       => '123',
             'createdAt'          => ['date' => '2011-05-19 20:46:21.000000', 'timezone_type' => 3, 'timezone' => 'UTC'],
             'updatedAt'          => ['date' => '2016-01-11 00:00:00.000000', 'timezone_type' => 3, 'timezone' => 'UTC'],
             'inheritance_status' => 'none',
@@ -41,6 +42,7 @@ class CategorySpec extends ObjectBehavior
         $this->getTranslations()->shouldHaveCount(1);
         $this->isEnabled()->shouldReturn(true);
         $this->getDataParentId()->shouldReturn(11);
+        $this->getParentRootId()->shouldReturn(123);
         $this->getCreatedAt()->shouldBeLike(new \DateTime('2011-05-19 20:46:21'));
         $this->getUpdatedAt()->shouldBeLike(new \DateTime('2016-01-11 00:00:00'));
         $this->getInheritanceStatus()->shouldReturn(InheritanceStatuses::NONE);

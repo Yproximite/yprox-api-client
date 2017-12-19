@@ -32,6 +32,11 @@ class Category implements ModelInterface
     private $dataParentId;
 
     /**
+     * @var int|null
+     */
+    private $parentRootId;
+
+    /**
      * @var \DateTime
      */
     private $createdAt;
@@ -61,14 +66,12 @@ class Category implements ModelInterface
         $this->translations      = $translations;
         $this->enabled           = (bool) $data['enabled'];
         $this->dataParentId      = !empty($data['dataParent']) ? (int) $data['dataParent'] : null;
+        $this->parentRootId      = (int) $data['parentRootId'];
         $this->createdAt         = new \DateTime($data['createdAt']['date']);
         $this->updatedAt         = new \DateTime($data['updatedAt']['date']);
         $this->inheritanceStatus = (string) $data['inheritance_status'];
     }
 
-    /**
-     * @return int
-     */
     public function getId(): int
     {
         return $this->id;
@@ -82,9 +85,6 @@ class Category implements ModelInterface
         return $this->translations;
     }
 
-    /**
-     * @return bool
-     */
     public function isEnabled(): bool
     {
         return $this->enabled;
@@ -98,17 +98,11 @@ class Category implements ModelInterface
         return $this->dataParentId;
     }
 
-    /**
-     * @return \DateTime
-     */
     public function getCreatedAt(): \DateTime
     {
         return $this->createdAt;
     }
 
-    /**
-     * @return \DateTime
-     */
     public function getUpdatedAt(): \DateTime
     {
         return $this->updatedAt;
@@ -122,5 +116,21 @@ class Category implements ModelInterface
     public function getInheritanceStatus(): string
     {
         return $this->inheritanceStatus;
+    }
+
+    /**
+     * @return int|null
+     */
+    public function getParentRootId()
+    {
+        return $this->parentRootId;
+    }
+
+    /**
+     * @param int|null $parentRootId
+     */
+    public function setParentRootId($parentRootId)
+    {
+        $this->parentRootId = $parentRootId;
     }
 }

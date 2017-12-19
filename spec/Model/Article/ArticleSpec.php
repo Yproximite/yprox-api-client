@@ -34,6 +34,7 @@ class ArticleSpec extends ObjectBehavior
             'translations'       => ['en' => $categoryTranslation],
             'enabled'            => 1,
             'dataParent'         => '11',
+            'parentRootId'       => '123',
             'createdAt'          => ['date' => '2011-05-19 20:46:21.000000', 'timezone_type' => 3, 'timezone' => 'UTC'],
             'updatedAt'          => ['date' => '2016-01-11 00:00:00.000000', 'timezone_type' => 3, 'timezone' => 'UTC'],
             'inheritance_status' => 'none',
