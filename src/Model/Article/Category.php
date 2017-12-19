@@ -72,9 +72,6 @@ class Category implements ModelInterface
         $this->inheritanceStatus = (string) $data['inheritance_status'];
     }
 
-    /**
-     * @return int
-     */
     public function getId(): int
     {
         return $this->id;
@@ -88,9 +85,6 @@ class Category implements ModelInterface
         return $this->translations;
     }
 
-    /**
-     * @return bool
-     */
     public function isEnabled(): bool
     {
         return $this->enabled;
@@ -99,22 +93,16 @@ class Category implements ModelInterface
     /**
      * @return int|null
      */
-    public function getDataParentId(): ?int
+    public function getDataParentId(): int
     {
         return $this->dataParentId;
     }
 
-    /**
-     * @return \DateTime
-     */
     public function getCreatedAt(): \DateTime
     {
         return $this->createdAt;
     }
 
-    /**
-     * @return \DateTime
-     */
     public function getUpdatedAt(): \DateTime
     {
         return $this->updatedAt;
@@ -133,7 +121,7 @@ class Category implements ModelInterface
     /**
      * @return int|null
      */
-    public function getParentRootId(): ?int
+    public function getParentRootId(): int
     {
         return $this->parentRootId;
     }
