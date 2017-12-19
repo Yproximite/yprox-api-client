@@ -93,7 +93,7 @@ class Category implements ModelInterface
     /**
      * @return int|null
      */
-    public function getDataParentId(): int
+    public function getDataParentId()
     {
         return $this->dataParentId;
     }
@@ -121,7 +121,7 @@ class Category implements ModelInterface
     /**
      * @return int|null
      */
-    public function getParentRootId(): int
+    public function getParentRootId()
     {
         return $this->parentRootId;
     }
