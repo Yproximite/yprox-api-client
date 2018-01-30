@@ -4,11 +4,16 @@ declare(strict_types=1);
 
 namespace Yproximite\Api\Util;
 
+/**
+ * Class RequestStatus
+ *
+ * @package Yproximite\Api\Util
+ */
 class RequestStatus
 {
-    CONST GET    = 'GET';
-    CONST POST   = 'POST';
-    CONST PATCH  = 'PATCH';
-    CONST PUT    = 'PUT';
-    CONST DELETE = 'DELETE';
+    const GET    = 'GET';
+    const POST   = 'POST';
+    const PATCH  = 'PATCH';
+    const PUT    = 'PUT';
+    const DELETE = 'DELETE';
 }
