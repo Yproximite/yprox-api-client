@@ -17,7 +17,6 @@ use Yproximite\Api\Message\Article\CategoryOverrideMessage;
 use Yproximite\Api\Message\Article\CategoryArticleListMessage;
 use Yproximite\Api\Message\Article\CategoryArticlePublishMessage;
 use Yproximite\Api\Message\Article\CategoryArticleUnpublishMessage;
-use Yproximite\Api\Util\RequestMethods;
 use Yproximite\Api\Util\RequestStatus;
 
 /**
