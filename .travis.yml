@@ -21,5 +21,4 @@ cache:
         - ~/.composer/cache/files
 
 script:
-    - bin/coke
     - bin/phpspec run -f dot -n
