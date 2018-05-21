@@ -22,3 +22,4 @@ cache:
 
 script:
     - bin/phpspec run -f dot -n
+    - bin/php-cs-fixer fix
