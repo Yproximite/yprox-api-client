@@ -10,3 +10,10 @@ Client library for yProx API
 * [Creating an endpoint](./doc/creating_endpoint.md)
 * [Updating](./doc/updating.md)
 * [Naming conventions](./doc/naming.md)
+
+### Development
+
+```
+$ make install-git-hooks
+$ ./bin/php-cs-fixer fix
+```
