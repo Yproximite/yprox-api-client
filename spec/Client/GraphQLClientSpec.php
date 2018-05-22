@@ -1,24 +1,25 @@
 <?php
 
-namespace spec\Yproximite\Api;
+namespace spec\Yproximite\Api\Client;
 
 use Http\Client\HttpClient;
 use Http\Message\MessageFactory;
 use PhpSpec\ObjectBehavior;
-use Yproximite\Api\Client;
+use Yproximite\Api\Client\AuthClient;
+use Yproximite\Api\Client\GraphQLClient;
 
-class ClientSpec extends ObjectBehavior
+class GraphQLClientSpec extends ObjectBehavior
 {
     const GRAPHQL_ENDPOINT = 'https://graphql.yproximite.fr';
 
     function it_is_initializable()
     {
-        $this->shouldHaveType(Client::class);
+        $this->shouldHaveType(GraphQLClient::class);
     }
 
-    function let(HttpClient $httpClient, MessageFactory $messageFactory)
+    function let(HttpClient $httpClient, AuthClient $authClient, MessageFactory $messageFactory)
     {
-        $this->beConstructedWith($httpClient, '<api_key>', self::GRAPHQL_ENDPOINT, $messageFactory);
+        $this->beConstructedWith($authClient, self::GRAPHQL_ENDPOINT, $httpClient, $messageFactory);
     }
 
     function it_should_send_auth_request_before_graphql_request()
