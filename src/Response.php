@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Yproximite\Api;
 
 class Response
@@ -18,14 +20,14 @@ class Response
     /**
      * @return null|object
      */
-    public function getData()
+    public function getData(): ?object
     {
         return $this->data;
     }
 
     public function hasErrors(): bool
     {
-        return count($this->errors) > 0;
+        return \count($this->errors) > 0;
     }
 
     public function getErrors(): array
@@ -35,7 +37,7 @@ class Response
 
     public function hasWarnings(): bool
     {
-        return count($this->warnings) > 0;
+        return \count($this->warnings) > 0;
     }
 
     public function getWarnings(): array

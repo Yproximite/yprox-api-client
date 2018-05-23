@@ -16,14 +16,17 @@ class AuthClientSpec extends ObjectBehavior
 {
     const LOGIN_ENDPOINT = 'https://api.yproximite.fr/login_check';
 
-    function it_is_initializable()
+    public function it_is_initializable()
     {
         $this->shouldHaveType(AuthClient::class);
     }
 
-    function let(HttpClient $httpClient, MessageFactory $messageFactory, RequestInterface $tokenRequest, ResponseInterface $tokenResponse, StreamInterface $tokenStream)
+    public function let(HttpClient $httpClient, MessageFactory $messageFactory, RequestInterface $tokenRequest, ResponseInterface $tokenResponse, StreamInterface $tokenStream)
     {
-        $messageFactory->createRequest('POST', self::LOGIN_ENDPOINT, [], http_build_query(['api_key' => '<api key>']))->willReturn($tokenRequest);
+        $headers = ['Content-Type' => 'application/x-www-form-urlencoded'];
+        $body    = http_build_query(['api_key' => '<api key>']);
+
+        $messageFactory->createRequest('POST', self::LOGIN_ENDPOINT, $headers, $body)->willReturn($tokenRequest);
         $httpClient->sendRequest($tokenRequest)->willReturn($tokenResponse);
         $tokenResponse->getStatusCode()->willReturn(200);
         $tokenResponse->getBody()->willReturn($tokenStream);
@@ -32,44 +35,52 @@ class AuthClientSpec extends ObjectBehavior
         $this->beConstructedWith('<api key>', self::LOGIN_ENDPOINT, $httpClient, $messageFactory);
     }
 
-    function it_should_authenticate_user()
+    public function it_should_authenticate_user()
     {
         $this->auth();
-        $this->isAuthenticated()->shouldReturn(true);
         $this->getApiToken()->shouldReturn('<jwt_token>');
+        $this->isAuthenticated()->shouldReturn(true);
     }
 
-    function it_should_throw_authentication_exception_if_api_key_is_invalid(
+    public function it_should_throw_authentication_exception_if_api_key_is_invalid(
         HttpClient $httpClient,
         MessageFactory $messageFactory,
         RequestInterface $tokenRequest,
         ResponseInterface $tokenResponse,
         StreamInterface $tokenStream
     ) {
-        $messageFactory->createRequest('POST', self::LOGIN_ENDPOINT, [], http_build_query(['api_key' => '<api key>']))->willReturn($tokenRequest);
+        $headers = ['Content-Type' => 'application/x-www-form-urlencoded'];
+        $body    = http_build_query(['api_key' => '<api key>']);
+
+        $messageFactory->createRequest('POST', self::LOGIN_ENDPOINT, $headers, $body)->willReturn($tokenRequest);
         $httpClient->sendRequest($tokenRequest)->willReturn($tokenResponse);
         $tokenResponse->getStatusCode()->willReturn(401);
         $tokenResponse->getBody()->willReturn($tokenStream);
         $tokenStream->__toString()->willReturn('{"message": "Invalid Credentials", "code": 401}');
 
         $this->shouldThrow(AuthenticationException::class)->during('auth');
+        $this->getApiToken()->shouldBeNull();
         $this->isAuthenticated()->shouldReturn(false);
     }
 
-    function it_should_throw_invalid_response_exception_if_invalid_json(
+    public function it_should_throw_invalid_response_exception_if_invalid_json(
         HttpClient $httpClient,
         MessageFactory $messageFactory,
         RequestInterface $tokenRequest,
         ResponseInterface $tokenResponse,
         StreamInterface $tokenStream
     ) {
-        $messageFactory->createRequest('POST', self::LOGIN_ENDPOINT, [], http_build_query(['api_key' => '<api key>']))->willReturn($tokenRequest);
+        $headers = ['Content-Type' => 'application/x-www-form-urlencoded'];
+        $body    = http_build_query(['api_key' => '<api key>']);
+
+        $messageFactory->createRequest('POST', self::LOGIN_ENDPOINT, $headers, $body)->willReturn($tokenRequest);
         $httpClient->sendRequest($tokenRequest)->willReturn($tokenResponse);
         $tokenResponse->getStatusCode()->willReturn(200);
         $tokenResponse->getBody()->willReturn($tokenStream);
         $tokenStream->__toString()->willReturn('{"invalid JSON",}');
 
         $this->shouldThrow(InvalidResponseException::class)->during('auth');
+        $this->getApiToken()->shouldBeNull();
         $this->isAuthenticated()->shouldReturn(false);
     }
 }

@@ -1,10 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Yproximite\Api\Util;
 
 use Yproximite\Api\Exception\FileNotFoundException;
 
-class UploadFileNormalizer
+class UploadFile
 {
     private $path;
     private $name;
@@ -41,7 +43,7 @@ class UploadFileNormalizer
 
     public function getContent(): string
     {
-        if ($this->content === null) {
+        if (null === $this->content) {
             set_error_handler(function ($type, $msg) use (&$error) { $error = $msg; });
             $content = file_get_contents($this->path);
             restore_error_handler();

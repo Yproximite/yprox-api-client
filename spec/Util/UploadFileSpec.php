@@ -4,17 +4,17 @@ namespace spec\Yproximite\Api\Util;
 
 use PhpSpec\ObjectBehavior;
 use Yproximite\Api\Exception\FileNotFoundException;
-use Yproximite\Api\Util\UploadFileNormalizer;
+use Yproximite\Api\Util\UploadFile;
 
-class UploadFileNormalizerSpec extends ObjectBehavior
+class UploadFileSpec extends ObjectBehavior
 {
-    function it_is_initializable()
+    public function it_is_initializable()
     {
         $this->beConstructedWith('foo');
-        $this->shouldHaveType(UploadFileNormalizer::class);
+        $this->shouldHaveType(UploadFile::class);
     }
 
-    function it_should_works_if_file_is_a_string()
+    public function it_should_works_if_file_is_a_string()
     {
         $this->beConstructedWith(__DIR__.'/../fixtures/Yproximite.png');
 
@@ -23,7 +23,7 @@ class UploadFileNormalizerSpec extends ObjectBehavior
         $this->getContent()->shouldBeString();
     }
 
-    function it_should_works_if_file_is_an_array_but_without_filename()
+    public function it_should_works_if_file_is_an_array_but_without_filename()
     {
         $this->beConstructedWith(['path' => __DIR__.'/../fixtures/Yproximite.png']);
 
@@ -32,7 +32,7 @@ class UploadFileNormalizerSpec extends ObjectBehavior
         $this->getContent()->shouldBeString();
     }
 
-    function it_should_works_if_file_is_an_array()
+    public function it_should_works_if_file_is_an_array()
     {
         $this->beConstructedWith(['path' => __DIR__.'/../fixtures/Yproximite.png', 'name' => 'Filename.png']);
 
@@ -41,7 +41,7 @@ class UploadFileNormalizerSpec extends ObjectBehavior
         $this->getContent()->shouldBeString();
     }
 
-    function it_should_fails_if_file_do_not_exists()
+    public function it_should_fails_if_file_do_not_exists()
     {
         $this->beConstructedWith('file-that-do-not-exists.png');
         $this->shouldThrow(FileNotFoundException::class)->duringInstantiation();
