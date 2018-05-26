@@ -28,9 +28,9 @@ class AuthClient extends AbstractClient
      * @throws InvalidResponseException
      * @throws \Http\Client\Exception
      */
-    public function auth(): void
+    public function auth(bool $force = false): void
     {
-        if ($this->isAuthenticated()) {
+        if (!$force && $this->isAuthenticated()) {
             return;
         }
 

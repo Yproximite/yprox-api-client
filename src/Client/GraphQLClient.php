@@ -8,6 +8,7 @@ use GuzzleHttp\Psr7\MultipartStream;
 use Http\Client\HttpClient;
 use Http\Message\MessageFactory;
 use Psr\Http\Message\StreamInterface;
+use Yproximite\Api\Exception\AuthenticationException;
 use Yproximite\Api\Exception\UploadEmptyFilesException;
 use Yproximite\Api\Response;
 use Yproximite\Api\Util\UploadFile;
@@ -67,26 +68,38 @@ class GraphQLClient extends AbstractClient
      */
     private function doGraphQLRequest(string $query, array $variables = [], array $files = [], string $filesParameterName = 'medias[]'): Response
     {
-        if (!$this->authClient->isAuthenticated()) {
-            $this->authClient->auth();
-        }
+        $this->authClient->auth();
 
         $headers = $this->computeRequestHeaders();
-        $data    = $this->computeRequestBody($query, $variables, $files, $filesParameterName);
+        $body    = $this->computeRequestBody($query, $variables, $files, $filesParameterName);
 
-        $request  = $this->getMessageFactory()->createRequest('POST', $this->graphqlEndpoint, $headers, $data);
-        $response = $this->getHttpClient()->sendRequest($request);
-        $contents = json_decode((string) $response->getBody(), true);
+        $request = $this->createRequest('POST', $this->graphqlEndpoint, $headers, $body);
+
+        try {
+            $response = $this->sendRequest($request);
+            $contents = $this->extractJson($request, $response);
+        } catch (AuthenticationException $e) {
+            $this->authClient->auth(true);
+            try {
+                $response = $this->sendRequest($request);
+                $contents = $this->extractJson($request, $response);
+            } catch (AuthenticationException $e) {
+                throw $e;
+            }
+        }
 
         return new Response($contents);
     }
 
     private function computeRequestHeaders(): array
     {
-        return [
-            'Accept'        => '*/*',
-            'Authorization' => sprintf('Bearer %s', $this->authClient->getApiToken()),
-        ];
+        $headers = ['Accept' => '*/*'];
+
+        if ($this->authClient->isAuthenticated()) {
+            $headers['Authorization'] = sprintf('Bearer %s', $this->authClient->getApiToken());
+        }
+
+        return $headers;
     }
 
     private function computeRequestBody(string $query, array $variables = [], array $files = [], string $filesParameterName = 'medias[]'): StreamInterface
