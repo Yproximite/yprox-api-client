@@ -2,13 +2,17 @@
 
 namespace spec\Yproximite\Api\Client;
 
+use GuzzleHttp\Psr7\MultipartStream;
 use Http\Client\HttpClient;
 use Http\Message\MessageFactory;
 use PhpSpec\ObjectBehavior;
+use Prophecy\Argument;
+use Psr\Http\Message\RequestInterface;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\StreamInterface;
 use Yproximite\Api\Client\AuthClient;
 use Yproximite\Api\Client\GraphQLClient;
 use Yproximite\Api\Exception\UploadEmptyFilesException;
-use Yproximite\Api\Response;
 
 class GraphQLClientSpec extends ObjectBehavior
 {
@@ -21,9 +25,6 @@ class GraphQLClientSpec extends ObjectBehavior
 
     public function let(HttpClient $httpClient, AuthClient $authClient, MessageFactory $messageFactory)
     {
-        $authClient->getApiToken()->willReturn('<api token>');
-        $authClient->isAuthenticated()->willReturn(true);
-
         $this->beConstructedWith($authClient, self::GRAPHQL_ENDPOINT, $httpClient, $messageFactory);
     }
 
@@ -67,27 +68,44 @@ class GraphQLClientSpec extends ObjectBehavior
     {
     }
 
-    public function it_should_upload_files()
-    {
-        $responseData = [
-            [
-                'id'               => 1,
-                'name'             => 'Logo Yprox-1.png',
-                'fullpathFilename' => 'https://example.com/media/original/Logo Yprox-1.png',
-            ],
-            [
-                'id'               => 2,
-                'name'             => 'GraphQL-2.png',
-                'fullpathFilename' => 'https://example.com/media/original/GraphQL-2.png',
-            ],
-        ];
+    public function it_should_upload_files(
+        HttpClient $httpClient,
+        MessageFactory $messageFactory,
+        RequestInterface $request,
+        ResponseInterface $response,
+        StreamInterface $stream,
+        AuthClient $authClient
+    ) {
+        $authClient->getApiToken()->willReturn('<api token>')->shouldBeCalled();
+        $authClient->isAuthenticated()->willReturn(true)->shouldBeCalled();
+        $authClient->auth()->shouldBeCalled();
 
-        $response = new Response(['data' => $responseData]);
+        $messageFactory->createRequest('POST', self::GRAPHQL_ENDPOINT, Argument::type('array'), Argument::type(MultipartStream::class))->willReturn($request);
+        $httpClient->sendRequest($request)->willReturn($response);
+        $response->getStatusCode()->willReturn(200);
+        $response->getBody()->willReturn($stream);
+        $stream->__toString()->willReturn(json_encode([
+            'data' => [
+                'uploadMedias' => [
+                    ['id' => 1, 'name' => 'Logo Yprox-1.png', 'fullpathFilename' => 'https://example.com/media/original/Logo Yprox-1.png'],
+                    ['id' => 2, 'name' => 'GraphQL-2.png', 'fullpathFilename' => 'https://example.com/media/original/GraphQL-2.png'],
+                ],
+            ],
+        ]));
 
-        $this->upload(123, [
+        $response = $this->upload(123, [
             ['path' => __DIR__.'/../fixtures/Yproximite.png', 'name' => 'Logo Yprox.png'],
             __DIR__.'/../fixtures/GraphQL.png',
-        ])->shouldReturn($response);
+        ]);
+
+        $response->hasErrors()->shouldBe(false);
+        $response->hasWarnings()->shouldBe(false);
+        $response->getData()->shouldBeLike((object) [
+            'uploadMedias' => [
+                ['id' => 1, 'name' => 'Logo Yprox-1.png', 'fullpathFilename' => 'https://example.com/media/original/Logo Yprox-1.png'],
+                ['id' => 2, 'name' => 'GraphQL-2.png', 'fullpathFilename' => 'https://example.com/media/original/GraphQL-2.png'],
+            ],
+        ]);
     }
 
     public function it_should_handle_case_when_uploading_empty_files()
