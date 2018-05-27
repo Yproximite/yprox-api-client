@@ -21,8 +21,18 @@ class AuthClientSpec extends ObjectBehavior
         $this->shouldHaveType(AuthClient::class);
     }
 
-    public function let(HttpClient $httpClient, MessageFactory $messageFactory, RequestInterface $tokenRequest, ResponseInterface $tokenResponse, StreamInterface $tokenStream)
+    public function let(HttpClient $httpClient, MessageFactory $messageFactory)
     {
+        $this->beConstructedWith('<api key>', self::LOGIN_ENDPOINT, $httpClient, $messageFactory);
+    }
+
+    public function it_should_authenticate_user(
+        HttpClient $httpClient,
+        MessageFactory $messageFactory,
+        RequestInterface $tokenRequest,
+        ResponseInterface $tokenResponse,
+        StreamInterface $tokenStream
+    ) {
         $headers = ['Content-Type' => 'application/x-www-form-urlencoded'];
         $body    = http_build_query(['api_key' => '<api key>']);
 
@@ -32,11 +42,6 @@ class AuthClientSpec extends ObjectBehavior
         $tokenResponse->getBody()->willReturn($tokenStream);
         $tokenStream->__toString()->willReturn('{"token": "<jwt_token>"}');
 
-        $this->beConstructedWith('<api key>', self::LOGIN_ENDPOINT, $httpClient, $messageFactory);
-    }
-
-    public function it_should_authenticate_user()
-    {
         $this->auth();
         $this->getApiToken()->shouldReturn('<jwt_token>');
         $this->isAuthenticated()->shouldReturn(true);
@@ -56,7 +61,7 @@ class AuthClientSpec extends ObjectBehavior
         $httpClient->sendRequest($tokenRequest)->willReturn($tokenResponse);
         $tokenResponse->getStatusCode()->willReturn(401);
         $tokenResponse->getBody()->willReturn($tokenStream);
-        $tokenStream->__toString()->willReturn('{"message": "Invalid Credentials", "code": 401}');
+        $tokenStream->__toString()->willReturn('{"message": "Bad credentials", "code": 401}');
 
         $this->shouldThrow(AuthenticationException::class)->during('auth');
         $this->getApiToken()->shouldBeNull();

@@ -28,9 +28,9 @@ class AuthClient extends AbstractClient
      * @throws InvalidResponseException
      * @throws \Http\Client\Exception
      */
-    public function auth(bool $force = false): void
+    public function auth(): void
     {
-        if (!$force && $this->isAuthenticated()) {
+        if ($this->isAuthenticated()) {
             return;
         }
 
@@ -57,5 +57,10 @@ class AuthClient extends AbstractClient
     public function getApiToken(): ?string
     {
         return $this->apiToken;
+    }
+
+    public function clearApiToken(): void
+    {
+        $this->apiKey = null;
     }
 }

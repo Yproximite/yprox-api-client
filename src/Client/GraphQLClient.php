@@ -68,18 +68,21 @@ class GraphQLClient extends AbstractClient
      */
     private function doGraphQLRequest(string $query, array $variables = [], array $files = [], string $filesParameterName = 'medias[]'): Response
     {
-        $this->authClient->auth();
+        if (!$this->authClient->isAuthenticated()) {
+            $this->authClient->auth();
+        }
 
         $headers = $this->computeRequestHeaders();
         $body    = $this->computeRequestBody($query, $variables, $files, $filesParameterName);
-
         $request = $this->createRequest('POST', $this->graphqlEndpoint, $headers, $body);
 
         try {
             $response = $this->sendRequest($request);
             $contents = $this->extractJson($request, $response);
         } catch (AuthenticationException $e) {
-            $this->authClient->auth(true);
+            // Maybe API Token has expired? Clear it, then try to fetch a new API Token
+            $this->authClient->clearApiToken();
+            $this->authClient->auth();
             try {
                 $response = $this->sendRequest($request);
                 $contents = $this->extractJson($request, $response);
