@@ -10,7 +10,8 @@ use Http\Message\MessageFactory;
 use Psr\Http\Message\StreamInterface;
 use Yproximite\Api\Exception\AuthenticationException;
 use Yproximite\Api\Exception\UploadEmptyFilesException;
-use Yproximite\Api\Response;
+use Yproximite\Api\Response\Response;
+use Yproximite\Api\Response\UploadResponse;
 use Yproximite\Api\Util\UploadFile;
 
 class GraphQLClient extends AbstractClient
@@ -31,7 +32,9 @@ class GraphQLClient extends AbstractClient
      */
     public function query(string $query, array $variables = []): Response
     {
-        return $this->doGraphQLRequest($query, $variables);
+        $contents = $this->doGraphQLRequest($query, $variables);
+
+        return new Response($contents);
     }
 
     /**
@@ -39,13 +42,15 @@ class GraphQLClient extends AbstractClient
      */
     public function mutation(string $query, array $variables = []): Response
     {
-        return $this->doGraphQLRequest($query, $variables);
+        $contents = $this->doGraphQLRequest($query, $variables);
+
+        return new Response($contents);
     }
 
     /**
      * @throws UploadEmptyFilesException
      */
-    public function upload(int $siteId, array $files = []): Response
+    public function upload(int $siteId, array $files = []): UploadResponse
     {
         $normalizedFiles = [];
 
@@ -58,7 +63,9 @@ class GraphQLClient extends AbstractClient
         }
 
         // @TODO: Implement upload mutation
-        return $this->doGraphQLRequest('upload ...', ['siteId' => $siteId], $normalizedFiles);
+        $contents = $this->doGraphQLRequest('upload ...', ['siteId' => $siteId], $normalizedFiles);
+
+        return new UploadResponse($contents);
     }
 
     /**
@@ -66,7 +73,7 @@ class GraphQLClient extends AbstractClient
      *
      * @throws \Http\Client\Exception
      */
-    private function doGraphQLRequest(string $query, array $variables = [], array $files = [], string $filesParameterName = 'medias[]'): Response
+    private function doGraphQLRequest(string $query, array $variables = [], array $files = [], string $filesParameterName = 'medias[]'): array
     {
         if (!$this->authClient->isAuthenticated()) {
             $this->authClient->auth();
@@ -91,7 +98,7 @@ class GraphQLClient extends AbstractClient
             }
         }
 
-        return new Response($contents);
+        return $contents;
     }
 
     private function computeRequestHeaders(): array

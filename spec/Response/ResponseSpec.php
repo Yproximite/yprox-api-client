@@ -3,7 +3,7 @@
 namespace spec\Yproximite\Api;
 
 use PhpSpec\ObjectBehavior;
-use Yproximite\Api\Response;
+use Yproximite\Api\Response\Response;
 
 class ResponseSpec extends ObjectBehavior
 {

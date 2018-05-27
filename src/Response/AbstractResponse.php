@@ -2,27 +2,19 @@
 
 declare(strict_types=1);
 
-namespace Yproximite\Api;
+namespace Yproximite\Api\Response;
 
-class Response
+class AbstractResponse
 {
-    private $data;
-    private $errors;
-    private $warnings;
+    protected $data;
+    protected $errors;
+    protected $warnings;
 
     public function __construct(array $payload)
     {
         $this->data     = null === ($data = $payload['data'] ?? null) ? null : (object) $data;
         $this->errors   = $payload['errors'] ?? [];
         $this->warnings = $payload['extensions']['warnings'] ?? [];
-    }
-
-    /**
-     * @return null|object
-     */
-    public function getData(): ?object
-    {
-        return $this->data;
     }
 
     public function hasErrors(): bool
