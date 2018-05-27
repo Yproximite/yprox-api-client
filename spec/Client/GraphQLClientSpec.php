@@ -12,6 +12,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\StreamInterface;
 use Yproximite\Api\Client\AuthClient;
 use Yproximite\Api\Client\GraphQLClient;
+use Yproximite\Api\Exception\InvalidResponseException;
 use Yproximite\Api\Exception\UploadEmptyFilesException;
 
 class GraphQLClientSpec extends ObjectBehavior
@@ -41,13 +42,13 @@ class GraphQLClientSpec extends ObjectBehavior
         $response->getStatusCode()->willReturn(200);
         $response->getBody()->willReturn($stream);
         $stream->__toString()->willReturn(json_encode([
-            'me' => ['firstName' => 'Hugo', 'lastName' => 'Alliaume'],
+            'me' => ['firstName' => 'Hugo'],
         ]));
 
         $authClient->isAuthenticated()->willReturn(false)->shouldBeCalled();
         $authClient->auth()->shouldBeCalled();
 
-        $this->query('{ me { firstName lastName } }');
+        $this->query('{ me { firstName } }');
     }
 
     public function it_should_not_send_auth_request_before_graphql_request_if_user_is_authenticated(
@@ -63,18 +64,14 @@ class GraphQLClientSpec extends ObjectBehavior
         $response->getStatusCode()->willReturn(200);
         $response->getBody()->willReturn($stream);
         $stream->__toString()->willReturn(json_encode([
-            'me' => ['firstName' => 'Hugo', 'lastName' => 'Alliaume'],
+            'me' => ['firstName' => 'Hugo'],
         ]));
 
         $authClient->getApiToken()->willReturn('<api token>')->shouldBeCalled();
         $authClient->isAuthenticated()->willReturn(true)->shouldBeCalled();
         $authClient->auth()->shouldNotBeCalled();
 
-        $this->query('{ me { firstName lastName } }');
-    }
-
-    public function it_should_handle_case_auth_response_is_invalid_json()
-    {
+        $this->query('{ me { firstName } }');
     }
 
     public function it_should_send_graphql_query()
@@ -82,14 +79,6 @@ class GraphQLClientSpec extends ObjectBehavior
     }
 
     public function it_should_send_graphql_mutation()
-    {
-    }
-
-    public function it_should_handle_errors()
-    {
-    }
-
-    public function it_should_handle_warnings()
     {
     }
 
@@ -138,7 +127,32 @@ class GraphQLClientSpec extends ObjectBehavior
         $this->shouldThrow(UploadEmptyFilesException::class)->during('upload', [123]);
     }
 
-    public function it_should_handle_case_when_uploading_is_failing()
+    public function it_should_handle_errors()
     {
+    }
+
+    public function it_should_handle_warnings()
+    {
+    }
+
+    public function it_should_handle_invalid_json(
+        HttpClient $httpClient,
+        MessageFactory $messageFactory,
+        RequestInterface $request,
+        ResponseInterface $response,
+        StreamInterface $stream,
+        AuthClient $authClient
+    ) {
+        $messageFactory->createRequest('POST', self::GRAPHQL_ENDPOINT, Argument::type('array'), Argument::type(MultipartStream::class))->willReturn($request);
+        $httpClient->sendRequest($request)->willReturn($response);
+        $response->getStatusCode()->willReturn(200);
+        $response->getBody()->willReturn($stream);
+        $stream->__toString()->willReturn('invalid JSON');
+
+        $authClient->getApiToken()->willReturn('<api token>')->shouldBeCalled();
+        $authClient->isAuthenticated()->willReturn(true)->shouldBeCalled();
+        $authClient->auth()->shouldNotBeCalled();
+
+        $this->shouldThrow(InvalidResponseException::class)->during('query', ['{ me { firstName } }']);
     }
 }
