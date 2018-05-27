@@ -4,7 +4,7 @@ Contributing
 Here are a few rules to follow in order to ease code reviews, and discussions before
 maintainers accept and merge your work.
 
-You MUST follow the [PSR-2](http://www.php-fig.org/psr/2/). You always can lint the code by executing `bin/coke`.
+You MUST follow the [PSR-2](http://www.php-fig.org/psr/2/). You always can lint the code by executing `bin/php-cs-fixer fix`.
 
 You MUST run the test suite.
 
