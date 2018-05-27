@@ -119,6 +119,89 @@ $response->hasWarnings(); // boolean
 $response->getWarnings(); // array of warnings, if any
 ```
 
+## Examples
+
+### Create a new Article
+
+We will use `createArticle` [mutation](https://graphql-doc.yproximite.com/mutation.doc.html).
+We should specify [input data](https://graphql-doc.yproximite.com/createarticleinput.doc.html) and a Site id.
+
+```php
+<?php
+
+use Yproximite\Api\Client\AuthClient;
+use Yproximite\Api\Client\GraphQLClient;
+
+$authClient = new AuthClient('<Your Yproximite API Key>');
+$client = new GraphQLClient($authClient);
+
+// Since GraphQL query can sometimes be very long, you can export them into .graphql files.
+$mutation = '
+    mutation CreateArticle($input: CreateArticleInput!, $siteId: Int!) {
+      createArticle(input: $input, siteId: $siteId) {
+        id
+        inheritanceStatus
+        mediaLimit
+        status
+        shareOnFacebook
+        categories {
+          enabled
+          createdAt
+          updatedAt
+          translations {
+            locale
+            title
+          }
+        }
+        translations {
+          title
+          slug
+          locale
+        }
+        articleMedias {
+          id
+          displayOrder
+          media {
+            id
+            fullpathFilename
+          }
+        }
+      }
+    }
+';
+
+$variables = [
+    'siteId' => 123,
+    'input' => [ // we should follow `CreateArticleInput` format
+        'translations' => [
+            [
+                'locale' => 'en',
+                'title' => 'Hello world',
+                'body' => 'This is my first mutation!',
+            ]
+        ],
+        'categories' => [1, 2, 3], // ID of Categories that belongs to your Site
+        'articlesMedias' => [1, 2], // ID of Medias that belongs to your Site
+        'status' => 'PUBLISHED'
+    ]
+];
+
+// Send mutation
+$response = $client->mutation($mutation, $variables);
+
+if ($response->hasErrors()) {
+   // Handle errors if any...
+}
+
+$createdArticle = $response->getData()['createArticle'];
+
+var_dump($createdArticle['id']);
+var_dump($createdArticle['categories']);
+var_dump($createdArticle['translations']);
+
+```
+
+
 ## Development
 
 ```
