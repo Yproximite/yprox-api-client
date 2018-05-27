@@ -40,9 +40,9 @@ class GraphQLClient extends AbstractClient
     /**
      * @throws \Http\Client\Exception
      */
-    public function mutation(string $query, array $variables = []): Response
+    public function mutation(string $mutation, array $variables = []): Response
     {
-        $contents = $this->doGraphQLRequest($query, $variables);
+        $contents = $this->doGraphQLRequest($mutation, $variables);
 
         return new Response($contents);
     }
