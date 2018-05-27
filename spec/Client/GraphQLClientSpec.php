@@ -114,7 +114,7 @@ class GraphQLClientSpec extends ObjectBehavior
 
         $response->hasErrors()->shouldBe(false);
         $response->hasWarnings()->shouldBe(false);
-        $response->getUploadedMedias()->shouldBeLike((object) [
+        $response->getUploadedMedias()->shouldBeLike([
             ['id' => 1, 'name' => 'Logo Yprox-1.png', 'fullpathFilename' => 'https://example.com/media/original/Logo Yprox-1.png'],
             ['id' => 2, 'name' => 'GraphQL-2.png', 'fullpathFilename' => 'https://example.com/media/original/GraphQL-2.png'],
         ]);

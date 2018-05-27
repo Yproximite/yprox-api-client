@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Yproximite\Api\Response;
 
-class UploadResponse extends AbstractResponse
+class UploadResponse extends Response
 {
-    public function getUploadedMedias(): object
+    public function getUploadedMedias(): array
     {
-        return (object) ($this->data->uploadMedias ?? []);
+        return null === $this->data ? [] : $this->data['uploadMedias'];
     }
 }

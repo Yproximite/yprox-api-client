@@ -6,10 +6,7 @@ namespace Yproximite\Api\Response;
 
 class Response extends AbstractResponse
 {
-    /**
-     * @return null|object
-     */
-    public function getData(): ?object
+    public function getData(): ?array
     {
         return $this->data;
     }

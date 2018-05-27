@@ -24,7 +24,7 @@ class ResponseSpec extends ObjectBehavior
 
         $this->beConstructedWith(['data' => $data]);
 
-        $this->getData()->shouldBeLike((object) $data);
+        $this->getData()->shouldBeLike($data);
 
         $this->hasErrors()->shouldReturn(false);
         $this->getErrors()->shouldReturn([]);
@@ -79,7 +79,7 @@ class ResponseSpec extends ObjectBehavior
             ],
         ]);
 
-        $this->getData()->shouldBeLike((object) $data);
+        $this->getData()->shouldBeLike($data);
 
         $this->hasErrors()->shouldReturn(false);
         $this->getErrors()->shouldReturn([]);

@@ -6,13 +6,16 @@ namespace Yproximite\Api\Response;
 
 class AbstractResponse
 {
+    /** @var array|null */
     protected $data;
+    /** @var array */
     protected $errors;
+    /** @var array */
     protected $warnings;
 
     public function __construct(array $payload)
     {
-        $this->data     = null === ($data = $payload['data'] ?? null) ? null : (object) $data;
+        $this->data     = $payload['data'] ?? null;
         $this->errors   = $payload['errors'] ?? [];
         $this->warnings = $payload['extensions']['warnings'] ?? [];
     }
