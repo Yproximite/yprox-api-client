@@ -28,16 +28,49 @@ class GraphQLClientSpec extends ObjectBehavior
         $this->beConstructedWith($authClient, self::GRAPHQL_ENDPOINT, $httpClient, $messageFactory);
     }
 
-    public function it_should_send_auth_request_before_graphql_request()
-    {
+    public function it_should_send_auth_request_before_graphql_request(
+        HttpClient $httpClient,
+        MessageFactory $messageFactory,
+        RequestInterface $request,
+        ResponseInterface $response,
+        StreamInterface $stream,
+        AuthClient $authClient
+    ) {
+        $messageFactory->createRequest('POST', self::GRAPHQL_ENDPOINT, Argument::type('array'), Argument::type(MultipartStream::class))->willReturn($request);
+        $httpClient->sendRequest($request)->willReturn($response);
+        $response->getStatusCode()->willReturn(200);
+        $response->getBody()->willReturn($stream);
+        $stream->__toString()->willReturn(json_encode([
+            'me' => ['firstName' => 'Hugo', 'lastName' => 'Alliaume'],
+        ]));
+
+        $authClient->isAuthenticated()->willReturn(false)->shouldBeCalled();
+        $authClient->auth()->shouldBeCalled();
+
+        $this->query('{ me { firstName lastName } }');
     }
 
-    public function it_should_handle_case_where_api_token_is_invalid()
-    {
-    }
+    public function it_should_not_send_auth_request_before_graphql_request_if_user_is_authenticated(
+        HttpClient $httpClient,
+        MessageFactory $messageFactory,
+        RequestInterface $request,
+        ResponseInterface $response,
+        StreamInterface $stream,
+        AuthClient $authClient
+    ) {
+        $messageFactory->createRequest('POST', self::GRAPHQL_ENDPOINT, Argument::type('array'), Argument::type(MultipartStream::class))->willReturn($request);
+        $httpClient->sendRequest($request)->willReturn($response);
+        $response->getStatusCode()->willReturn(200);
+        $response->getBody()->willReturn($stream);
+        $stream->__toString()->willReturn(json_encode([
+            'me' => ['firstName' => 'Hugo', 'lastName' => 'Alliaume'],
+        ]));
 
-    public function it_should_handle_case_auth_response_returns_401()
-    {
+        $authClient->getApiToken()->willReturn('<api token>')->shouldBeCalled();
+        $authClient->isAuthenticated()->willReturn(true)->shouldBeCalled();
+        $authClient->auth()->shouldNotBeCalled();
+
+        $this->query('{ me { firstName lastName } }');
     }
 
     public function it_should_handle_case_auth_response_is_invalid_json()
@@ -48,23 +81,15 @@ class GraphQLClientSpec extends ObjectBehavior
     {
     }
 
-    public function it_should_handle_case_when_graphql_query_returns_errors()
-    {
-    }
-
-    public function it_should_handle_case_when_graphql_query_returns_warnings()
-    {
-    }
-
     public function it_should_send_graphql_mutation()
     {
     }
 
-    public function it_should_handle_case_when_mutation_query_returns_errors()
+    public function it_should_handle_errors()
     {
     }
 
-    public function it_should_handle_case_when_mutation_query_returns_warnings()
+    public function it_should_handle_warnings()
     {
     }
 
@@ -76,10 +101,6 @@ class GraphQLClientSpec extends ObjectBehavior
         StreamInterface $stream,
         AuthClient $authClient
     ) {
-        $authClient->getApiToken()->willReturn('<api token>')->shouldBeCalled();
-        $authClient->isAuthenticated()->willReturn(true)->shouldBeCalled();
-        $authClient->auth()->shouldBeCalled();
-
         $messageFactory->createRequest('POST', self::GRAPHQL_ENDPOINT, Argument::type('array'), Argument::type(MultipartStream::class))->willReturn($request);
         $httpClient->sendRequest($request)->willReturn($response);
         $response->getStatusCode()->willReturn(200);
@@ -92,6 +113,10 @@ class GraphQLClientSpec extends ObjectBehavior
                 ],
             ],
         ]));
+
+        $authClient->getApiToken()->willReturn('<api token>')->shouldBeCalled();
+        $authClient->isAuthenticated()->willReturn(true)->shouldBeCalled();
+        $authClient->auth()->shouldNotBeCalled();
 
         $response = $this->upload(123, [
             ['path' => __DIR__.'/../fixtures/Yproximite.png', 'name' => 'Logo Yprox.png'],
