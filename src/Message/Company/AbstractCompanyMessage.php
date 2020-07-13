@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Yproximite\Api\Message\Company;
@@ -20,17 +21,11 @@ abstract class AbstractCompanyMessage implements MessageInterface
      */
     private $parentId;
 
-    /**
-     * @return string
-     */
     public function getName(): string
     {
         return $this->name;
     }
 
-    /**
-     * @param string $name
-     */
     public function setName(string $name)
     {
         $this->name = $name;
@@ -44,9 +39,6 @@ abstract class AbstractCompanyMessage implements MessageInterface
         return $this->parentId;
     }
 
-    /**
-     * @param int|null $parentId
-     */
     public function setParentId(int $parentId = null)
     {
         $this->parentId = $parentId;

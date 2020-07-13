@@ -1,10 +1,11 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Yproximite\Api\Message\Location;
 
-use Yproximite\Api\Model\Location\Location;
 use Yproximite\Api\Message\IdentityAwareMessageTrait;
+use Yproximite\Api\Model\Location\Location;
 
 /**
  * Class LocationPatchMessage
@@ -13,11 +14,6 @@ class LocationPatchMessage extends AbstractLocationMessage
 {
     use IdentityAwareMessageTrait;
 
-    /**
-     * @param Location $location
-     *
-     * @return self
-     */
     public static function createFromLocation(Location $location): self
     {
         $message = new self();

@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Yproximite\Api\Message\CallTracking;
@@ -17,7 +18,7 @@ class CallTrackingPostMessage extends AbstractCallTrackingMessage
             'name'             => $this->getName(),
             'phoneDid'         => $this->getPhoneDid(),
             'phoneDestination' => $this->getPhoneDestination(),
-            'callerId'         => intval($this->hasCallerId()),
+            'callerId'         => \intval($this->hasCallerId()),
         ];
     }
 }

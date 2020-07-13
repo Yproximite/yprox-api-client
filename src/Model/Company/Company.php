@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Yproximite\Api\Model\Company;
@@ -27,8 +28,6 @@ class Company implements ModelInterface
 
     /**
      * Company constructor.
-     *
-     * @param array $data
      */
     public function __construct(array $data)
     {
@@ -37,17 +36,11 @@ class Company implements ModelInterface
         $this->parentId = !empty($data['parent']) ? (int) $data['parent'] : null;
     }
 
-    /**
-     * @return int
-     */
     public function getId(): int
     {
         return $this->id;
     }
 
-    /**
-     * @return string
-     */
     public function getName(): string
     {
         return $this->name;

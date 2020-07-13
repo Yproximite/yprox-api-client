@@ -1,21 +1,21 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Yproximite\Api\Client;
 
+use Http\Client\Exception\HttpException;
+use Http\Client\Exception\TransferException as HttpTransferException;
 use Http\Client\HttpClient;
+use Http\Discovery\MessageFactoryDiscovery;
 use Http\Message\MessageFactory;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\StreamInterface;
-use Http\Client\Exception\HttpException;
-use Http\Discovery\MessageFactoryDiscovery;
-use Http\Client\Exception\TransferException as HttpTransferException;
-
+use Yproximite\Api\Exception\AuthenficationException;
+use Yproximite\Api\Exception\InvalidResponseException;
 use Yproximite\Api\Exception\LogicException;
 use Yproximite\Api\Exception\RequestException;
 use Yproximite\Api\Exception\TransferException;
-use Yproximite\Api\Exception\AuthenficationException;
-use Yproximite\Api\Exception\InvalidResponseException;
 
 /**
  * Class Client
@@ -58,11 +58,6 @@ class Client
 
     /**
      * Client constructor.
-     *
-     * @param HttpClient          $httpClient
-     * @param string|null         $apiKey
-     * @param string|null         $baseUrl
-     * @param MessageFactory|null $messageFactory
      */
     public function __construct(
         HttpClient $httpClient,
@@ -76,17 +71,11 @@ class Client
         $this->baseUrl        = $baseUrl;
     }
 
-    /**
-     * @param null|string $baseUrl
-     */
     public function setBaseUrl(string $baseUrl = null)
     {
         $this->baseUrl = $baseUrl;
     }
 
-    /**
-     * @param null|string $apiKey
-     */
     public function setApiKey(string $apiKey = null)
     {
         $this->apiKey = $apiKey;
@@ -97,12 +86,8 @@ class Client
     /**
      * Sends a request
      *
-     * @param string                                     $method
-     * @param string                                     $path
      * @param array|resource|string|StreamInterface|null $body
-     * @param array                                      $headers
      *
-     * @return mixed
      * @throws TransferException
      * @throws InvalidResponseException
      * @throws AuthenficationException
@@ -114,7 +99,7 @@ class Client
         try {
             $content = $this->doSendRequest($request);
         } catch (InvalidResponseException $e) {
-            if ($e->getResponse()->getStatusCode() === 401 && !$this->apiTokenFresh) {
+            if (401 === $e->getResponse()->getStatusCode() && !$this->apiTokenFresh) {
                 $this->resetApiToken();
 
                 $request = $this->createRequest($method, $path, $body, $headers);
@@ -128,13 +113,7 @@ class Client
     }
 
     /**
-     * @param string $method
-     * @param string $path
-     * @param null   $body
-     * @param array  $headers
-     * @param bool   $withAuthorization
-     *
-     * @return RequestInterface
+     * @param null $body
      */
     private function createRequest(
         string $method,
@@ -146,11 +125,11 @@ class Client
         $uri  = $this->getSafeBaseUrl();
         $uri .= '/'.$path;
 
-        $rawData = is_array($body) ? http_build_query($body) : $body;
+        $rawData = \is_array($body) ? http_build_query($body) : $body;
         $body    = null;
 
-        if (in_array($method, $this->getQueryMethods())) {
-            if (is_string($rawData) && $rawData !== '') {
+        if (\in_array($method, $this->getQueryMethods())) {
+            if (\is_string($rawData) && '' !== $rawData) {
                 $uri .= '?'.$rawData;
             }
         } else {
@@ -166,29 +145,17 @@ class Client
         return $this->getMessageFactory()->createRequest($method, $uri, $headers + $baseHeaders, $body);
     }
 
-    /**
-     * @return string
-     */
     private function getSafeBaseUrl(): string
     {
-        return !is_null($this->baseUrl) ? $this->baseUrl : self::BASE_URL;
+        return !\is_null($this->baseUrl) ? $this->baseUrl : self::BASE_URL;
     }
 
-    /**
-     * @param RequestInterface $request
-     *
-     * @return mixed
-     */
     private function doSendRequest(RequestInterface $request)
     {
         try {
             $response = $this->getHttpClient()->sendRequest($request);
         } catch (HttpTransferException $e) {
-            throw new TransferException(
-                $e->getMessage(),
-                $request,
-                $e instanceof HttpException ? $e->getResponse() : null
-            );
+            throw new TransferException($e->getMessage(), $request, $e instanceof HttpException ? $e->getResponse() : null);
         }
 
         if ($response->getStatusCode() >= 400) {
@@ -203,27 +170,21 @@ class Client
 
         $data = json_decode($rawData, true);
 
-        if (json_last_error() !== JSON_ERROR_NONE) {
+        if (\JSON_ERROR_NONE !== json_last_error()) {
             throw new InvalidResponseException('Could not decode the response.', $request, $response);
         }
 
         return $data;
     }
 
-    /**
-     * @return HttpClient
-     */
     private function getHttpClient(): HttpClient
     {
         return $this->httpClient;
     }
 
-    /**
-     * @return MessageFactory
-     */
     private function getMessageFactory(): MessageFactory
     {
-        if ($this->messageFactory === null) {
+        if (null === $this->messageFactory) {
             $this->messageFactory = MessageFactoryDiscovery::find();
         }
 
@@ -232,20 +193,15 @@ class Client
 
     /**
      * Returns all methods that uses query string to transfer a request data
-     *
-     * @return array
      */
     private function getQueryMethods(): array
     {
         return ['GET', 'HEAD', 'DELETE'];
     }
 
-    /**
-     * @return string
-     */
     private function getApiToken(): string
     {
-        if (!is_null($this->apiToken)) {
+        if (!\is_null($this->apiToken)) {
             $this->apiTokenFresh = false;
         } else {
             $this->updateApiToken();
@@ -256,7 +212,7 @@ class Client
 
     private function updateApiToken()
     {
-        if (is_null($this->apiKey)) {
+        if (\is_null($this->apiKey)) {
             throw new LogicException('The api key cannot be empty.');
         }
 
@@ -268,7 +224,7 @@ class Client
             throw new AuthenficationException('Could not request a token.');
         }
 
-        if (!is_array($data) || !array_key_exists('token', $data)) {
+        if (!\is_array($data) || !\array_key_exists('token', $data)) {
             throw new AuthenficationException('Could not retreive a token.');
         }
 
@@ -281,9 +237,6 @@ class Client
         $this->apiTokenFresh = true;
     }
 
-    /**
-     * @return string
-     */
     private function getAuthorizationHeader(): string
     {
         return sprintf('Bearer %s', $this->getApiToken());

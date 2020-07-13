@@ -1,11 +1,12 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Yproximite\Api\Message\Article;
 
-use Yproximite\Api\Util\Helper;
 use Yproximite\Api\Message\MessageInterface;
 use Yproximite\Api\Message\SiteAwareMessageTrait;
+use Yproximite\Api\Util\Helper;
 
 /**
  * Class AbstractCategoryMessage
@@ -37,9 +38,6 @@ abstract class AbstractCategoryMessage implements MessageInterface
         return $this->parentRootId;
     }
 
-    /**
-     * @param int|null $parentRootId
-     */
     public function setParentRootId(int $parentRootId = null)
     {
         $this->parentRootId = $parentRootId;
@@ -53,9 +51,6 @@ abstract class AbstractCategoryMessage implements MessageInterface
         return $this->enabled;
     }
 
-    /**
-     * @param bool|null $enabled
-     */
     public function setEnabled(bool $enabled = null)
     {
         $this->enabled = $enabled;
@@ -69,17 +64,11 @@ abstract class AbstractCategoryMessage implements MessageInterface
         return $this->translations;
     }
 
-    /**
-     * @param CategoryTranslationMessage $translation
-     */
     public function addTranslation(CategoryTranslationMessage $translation)
     {
         $this->translations[] = $translation;
     }
 
-    /**
-     * @param CategoryTranslationMessage $translation
-     */
     public function removeTranslation(CategoryTranslationMessage $translation)
     {
         array_splice($this->translations, array_search($translation, $this->translations), 1);

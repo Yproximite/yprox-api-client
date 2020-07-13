@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Yproximite\Api\Model\TeamWorker;
@@ -27,8 +28,6 @@ class TeamWorker implements ModelInterface
 
     /**
      * TeamWorker constructor.
-     *
-     * @param array $data
      */
     public function __construct(array $data)
     {
@@ -37,25 +36,16 @@ class TeamWorker implements ModelInterface
         $this->firstName = (string) $data['firstName'];
     }
 
-    /**
-     * @return int
-     */
     public function getId(): int
     {
         return $this->id;
     }
 
-    /**
-     * @return string
-     */
     public function getLastName(): string
     {
         return $this->lastName;
     }
 
-    /**
-     * @return string
-     */
     public function getFirstName(): string
     {
         return $this->firstName;

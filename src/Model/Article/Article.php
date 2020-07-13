@@ -1,11 +1,12 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Yproximite\Api\Model\Article;
 
+use Yproximite\Api\Model\Inheritance\InheritanceStatuses;
 use Yproximite\Api\Model\ModelInterface;
 use Yproximite\Api\Model\Site\SiteRoute;
-use Yproximite\Api\Model\Inheritance\InheritanceStatuses;
 
 /**
  * Class Article
@@ -123,8 +124,6 @@ class Article implements ModelInterface
 
     /**
      * Article constructor.
-     *
-     * @param array $data
      */
     public function __construct(array $data)
     {
@@ -165,9 +164,6 @@ class Article implements ModelInterface
         $this->inheritanceStatus   = (string) $data['inheritance_status'];
     }
 
-    /**
-     * @return int
-     */
     public function getId(): int
     {
         return $this->id;
@@ -197,9 +193,6 @@ class Article implements ModelInterface
         return $this->medias;
     }
 
-    /**
-     * @return int
-     */
     public function getMediaLimit(): int
     {
         return $this->mediaLimit;
@@ -208,56 +201,38 @@ class Article implements ModelInterface
     /**
      * @see Article::getStatuses()
      *
-     * @return null|string
+     * @return string|null
      */
     public function getStatus()
     {
         return $this->status;
     }
 
-    /**
-     * @return bool
-     */
     public function isDisplayPrintButton(): bool
     {
         return $this->displayPrintButton;
     }
 
-    /**
-     * @return bool
-     */
     public function isDisplayPrintAddress(): bool
     {
         return $this->displayPrintAddress;
     }
 
-    /**
-     * @return bool
-     */
     public function isWithReturnButton(): bool
     {
         return $this->withReturnButton;
     }
 
-    /**
-     * @return bool
-     */
     public function isShowCreationDate(): bool
     {
         return $this->showCreationDate;
     }
 
-    /**
-     * @return bool
-     */
     public function isShowImageCaption(): bool
     {
         return $this->showImageCaption;
     }
 
-    /**
-     * @return bool
-     */
     public function isAutoPlaySlider(): bool
     {
         return $this->autoPlaySlider;
@@ -271,17 +246,11 @@ class Article implements ModelInterface
         return $this->routes;
     }
 
-    /**
-     * @return bool
-     */
     public function isShareOnFacebook(): bool
     {
         return $this->shareOnFacebook;
     }
 
-    /**
-     * @return int
-     */
     public function getDisplayOrder(): int
     {
         return $this->displayOrder;
@@ -295,17 +264,11 @@ class Article implements ModelInterface
         return $this->dataParentId;
     }
 
-    /**
-     * @return \DateTime
-     */
     public function getCreatedAt(): \DateTime
     {
         return $this->createdAt;
     }
 
-    /**
-     * @return \DateTime
-     */
     public function getUpdatedAt(): \DateTime
     {
         return $this->updatedAt;
@@ -313,8 +276,6 @@ class Article implements ModelInterface
 
     /**
      * @see InheritanceStatuses::getValues()
-     *
-     * @return string
      */
     public function getInheritanceStatus(): string
     {

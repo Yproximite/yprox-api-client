@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Yproximite\Api\Model\Article;
@@ -28,8 +29,6 @@ class ArticleMedia implements ModelInterface
 
     /**
      * ArticleMedia constructor.
-     *
-     * @param array $data
      */
     public function __construct(array $data)
     {
@@ -38,25 +37,16 @@ class ArticleMedia implements ModelInterface
         $this->media        = new Media($data['media']);
     }
 
-    /**
-     * @return int
-     */
     public function getId(): int
     {
         return $this->id;
     }
 
-    /**
-     * @return int
-     */
     public function getDisplayOrder(): int
     {
         return $this->displayOrder;
     }
 
-    /**
-     * @return Media
-     */
     public function getMedia(): Media
     {
         return $this->media;

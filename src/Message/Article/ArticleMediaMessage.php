@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Yproximite\Api\Message\Article;
@@ -21,11 +22,6 @@ class ArticleMediaMessage implements MessageInterface
      */
     private $displayOrder;
 
-    /**
-     * @param ArticleMedia $media
-     *
-     * @return self
-     */
     public static function createFromArticleMedia(ArticleMedia $media): self
     {
         $message = new self();
@@ -35,17 +31,11 @@ class ArticleMediaMessage implements MessageInterface
         return $message;
     }
 
-    /**
-     * @return int
-     */
     public function getMediaId(): int
     {
         return $this->mediaId;
     }
 
-    /**
-     * @param int $mediaId
-     */
     public function setMediaId(int $mediaId)
     {
         $this->mediaId = $mediaId;
@@ -59,9 +49,6 @@ class ArticleMediaMessage implements MessageInterface
         return $this->displayOrder;
     }
 
-    /**
-     * @param int|null $displayOrder
-     */
     public function setDisplayOrder(int $displayOrder = null)
     {
         $this->displayOrder = $displayOrder;

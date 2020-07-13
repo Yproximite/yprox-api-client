@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Yproximite\Api\Service;
@@ -28,8 +29,6 @@ class ServiceAggregator
 
     /**
      * ServiceAggregator constructor.
-     *
-     * @param Client $client
      */
     public function __construct(Client $client)
     {
@@ -37,9 +36,6 @@ class ServiceAggregator
         $this->modelFactory = new ModelFactory();
     }
 
-    /**
-     * @return ArticleService
-     */
     public function article(): ArticleService
     {
         /** @var ArticleService $service */
@@ -48,9 +44,6 @@ class ServiceAggregator
         return $service;
     }
 
-    /**
-     * @return CallTrackingService
-     */
     public function callTracking(): CallTrackingService
     {
         /** @var CallTrackingService $service */
@@ -59,9 +52,6 @@ class ServiceAggregator
         return $service;
     }
 
-    /**
-     * @return CompanyService
-     */
     public function company(): CompanyService
     {
         /** @var CompanyService $service */
@@ -70,9 +60,6 @@ class ServiceAggregator
         return $service;
     }
 
-    /**
-     * @return FieldService
-     */
     public function field(): FieldService
     {
         /** @var FieldService $service */
@@ -81,9 +68,6 @@ class ServiceAggregator
         return $service;
     }
 
-    /**
-     * @return LocationService
-     */
     public function location(): LocationService
     {
         /** @var LocationService $service */
@@ -92,9 +76,6 @@ class ServiceAggregator
         return $service;
     }
 
-    /**
-     * @return MediaService
-     */
     public function media(): MediaService
     {
         /** @var MediaService $service */
@@ -103,9 +84,6 @@ class ServiceAggregator
         return $service;
     }
 
-    /**
-     * @return SiteService
-     */
     public function site(): SiteService
     {
         /** @var SiteService $service */
@@ -114,9 +92,6 @@ class ServiceAggregator
         return $service;
     }
 
-    /**
-     * @return UserService
-     */
     public function user(): UserService
     {
         /** @var UserService $service */
@@ -125,9 +100,6 @@ class ServiceAggregator
         return $service;
     }
 
-    /**
-     * @return TeamWorkerService
-     */
     public function teamWorker(): TeamWorkerService
     {
         /** @var TeamWorkerService $service */
@@ -136,14 +108,9 @@ class ServiceAggregator
         return $service;
     }
 
-    /**
-     * @param string $class
-     *
-     * @return ServiceInterface
-     */
     private function getService(string $class): ServiceInterface
     {
-        if (!array_key_exists($class, $this->services)) {
+        if (!\array_key_exists($class, $this->services)) {
             $this->services[$class] = new $class($this->client, $this->modelFactory);
         }
 

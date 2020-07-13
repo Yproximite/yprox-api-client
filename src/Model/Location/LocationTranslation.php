@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Yproximite\Api\Model\Location;
@@ -27,8 +28,6 @@ class LocationTranslation implements ModelInterface
 
     /**
      * LocationTranslation constructor.
-     *
-     * @param array $data
      */
     public function __construct(array $data)
     {
@@ -37,24 +36,18 @@ class LocationTranslation implements ModelInterface
         $this->openingHours = !empty($data['openingHours']) ? (string) $data['openingHours'] : null;
     }
 
-    /**
-     * @return string
-     */
     public function getLocale(): string
     {
         return $this->locale;
     }
 
-    /**
-     * @return string
-     */
     public function getTitle(): string
     {
         return $this->title;
     }
 
     /**
-     * @return null|string
+     * @return string|null
      */
     public function getOpeningHours()
     {

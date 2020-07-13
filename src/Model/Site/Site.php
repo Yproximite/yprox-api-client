@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Yproximite\Api\Model\Site;
@@ -108,8 +109,6 @@ class Site implements ModelInterface
 
     /**
      * Site constructor.
-     *
-     * @param array $data
      */
     public function __construct(array $data)
     {
@@ -125,25 +124,16 @@ class Site implements ModelInterface
         $this->type          = (string) $data['type'];
     }
 
-    /**
-     * @return int
-     */
     public function getId(): int
     {
         return $this->id;
     }
 
-    /**
-     * @return string
-     */
     public function getTitle(): string
     {
         return $this->title;
     }
 
-    /**
-     * @return string
-     */
     public function getHost(): string
     {
         return $this->host;
@@ -158,24 +148,18 @@ class Site implements ModelInterface
     }
 
     /**
-     * @return null|string
+     * @return string|null
      */
     public function getContactEmail()
     {
         return $this->contactEmail;
     }
 
-    /**
-     * @return \DateTime
-     */
     public function getCreatedAt(): \DateTime
     {
         return $this->createdAt;
     }
 
-    /**
-     * @return \DateTime
-     */
     public function getUpdatedAt(): \DateTime
     {
         return $this->updatedAt;
@@ -191,8 +175,6 @@ class Site implements ModelInterface
 
     /**
      * @see Site::getBillingStatuses()
-     *
-     * @return string
      */
     public function getBillingStatus(): string
     {
@@ -201,8 +183,6 @@ class Site implements ModelInterface
 
     /**
      * @see Site::getTypes()
-     *
-     * @return string
      */
     public function getType(): string
     {

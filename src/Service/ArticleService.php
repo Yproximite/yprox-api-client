@@ -1,22 +1,23 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Yproximite\Api\Service;
 
-use Yproximite\Api\Message\Article\ArticleOverrideMessage;
-use Yproximite\Api\Model\Article\Article;
-use Yproximite\Api\Model\Article\Category;
 use Yproximite\Api\Message\Article\ArticleListMessage;
-use Yproximite\Api\Message\Article\ArticlePostMessage;
+use Yproximite\Api\Message\Article\ArticleOverrideMessage;
 use Yproximite\Api\Message\Article\ArticlePatchMessage;
-use Yproximite\Api\Message\Article\CategoryListMessage;
-use Yproximite\Api\Message\Article\CategoryPostMessage;
-use Yproximite\Api\Message\Article\CategoryPatchMessage;
+use Yproximite\Api\Message\Article\ArticlePostMessage;
 use Yproximite\Api\Message\Article\ArticleUnpublishMessage;
-use Yproximite\Api\Message\Article\CategoryOverrideMessage;
 use Yproximite\Api\Message\Article\CategoryArticleListMessage;
 use Yproximite\Api\Message\Article\CategoryArticlePublishMessage;
 use Yproximite\Api\Message\Article\CategoryArticleUnpublishMessage;
+use Yproximite\Api\Message\Article\CategoryListMessage;
+use Yproximite\Api\Message\Article\CategoryOverrideMessage;
+use Yproximite\Api\Message\Article\CategoryPatchMessage;
+use Yproximite\Api\Message\Article\CategoryPostMessage;
+use Yproximite\Api\Model\Article\Article;
+use Yproximite\Api\Model\Article\Category;
 use Yproximite\Api\Util\RequestStatus;
 
 /**
@@ -25,8 +26,6 @@ use Yproximite\Api\Util\RequestStatus;
 class ArticleService extends AbstractService implements ServiceInterface
 {
     /**
-     * @param ArticleListMessage $message
-     *
      * @return Article[]
      */
     public function getArticles(ArticleListMessage $message): array
@@ -41,11 +40,6 @@ class ArticleService extends AbstractService implements ServiceInterface
         return $models;
     }
 
-    /**
-     * @param ArticlePostMessage $message
-     *
-     * @return Article
-     */
     public function postArticle(ArticlePostMessage $message): Article
     {
         $path = sprintf('sites/%d/articles', $message->getSiteId());
@@ -59,11 +53,6 @@ class ArticleService extends AbstractService implements ServiceInterface
         return $model;
     }
 
-    /**
-     * @param ArticlePatchMessage $message
-     *
-     * @return Article
-     */
     public function patchArticle(ArticlePatchMessage $message): Article
     {
         $path = sprintf('sites/%d/articles/%d', $message->getSiteId(), $message->getId());
@@ -78,8 +67,6 @@ class ArticleService extends AbstractService implements ServiceInterface
     }
 
     /**
-     * @param ArticleUnpublishMessage $message
-     *
      * @return Article[]
      */
     public function unpublishArticles(ArticleUnpublishMessage $message): array
@@ -96,8 +83,6 @@ class ArticleService extends AbstractService implements ServiceInterface
     }
 
     /**
-     * @param CategoryListMessage $message
-     *
      * @return Category[]
      */
     public function getCategories(CategoryListMessage $message): array
@@ -112,11 +97,6 @@ class ArticleService extends AbstractService implements ServiceInterface
         return $models;
     }
 
-    /**
-     * @param CategoryPostMessage $message
-     *
-     * @return Category
-     */
     public function postCategory(CategoryPostMessage $message): Category
     {
         $path = sprintf('sites/%d/categories', $message->getSiteId());
@@ -130,11 +110,6 @@ class ArticleService extends AbstractService implements ServiceInterface
         return $model;
     }
 
-    /**
-     * @param CategoryPatchMessage $message
-     *
-     * @return Category
-     */
     public function patchCategory(CategoryPatchMessage $message): Category
     {
         $path = sprintf('sites/%d/categories/%d', $message->getSiteId(), $message->getId());
@@ -148,11 +123,6 @@ class ArticleService extends AbstractService implements ServiceInterface
         return $model;
     }
 
-    /**
-     * @param CategoryOverrideMessage $message
-     *
-     * @return Category
-     */
     public function overrideCategory(CategoryOverrideMessage $message): Category
     {
         $path = sprintf('sites/%d/categories/%d/override', $message->getSiteId(), $message->getId());
@@ -166,8 +136,6 @@ class ArticleService extends AbstractService implements ServiceInterface
     }
 
     /**
-     * @param CategoryArticleListMessage $message
-     *
      * @return Article[]
      */
     public function getCategoryArticles(CategoryArticleListMessage $message): array
@@ -182,11 +150,6 @@ class ArticleService extends AbstractService implements ServiceInterface
         return $models;
     }
 
-    /**
-     * @param CategoryArticlePublishMessage $message
-     *
-     * @return Category
-     */
     public function publishCategoryArticles(CategoryArticlePublishMessage $message): Category
     {
         $path = sprintf('sites/%d/categories/%d/publish_articles', $message->getSiteId(), $message->getCategoryId());
@@ -200,11 +163,6 @@ class ArticleService extends AbstractService implements ServiceInterface
         return $model;
     }
 
-    /**
-     * @param CategoryArticleUnpublishMessage $message
-     *
-     * @return Category
-     */
     public function unpublishCategoryArticles(CategoryArticleUnpublishMessage $message): Category
     {
         $path = sprintf('sites/%d/categories/%d/unpublish_articles', $message->getSiteId(), $message->getCategoryId());
@@ -218,11 +176,6 @@ class ArticleService extends AbstractService implements ServiceInterface
         return $model;
     }
 
-    /**
-     * @param ArticleOverrideMessage $message
-     *
-     * @return Article
-     */
     public function overrideArticle(ArticleOverrideMessage $message): Article
     {
         $path = sprintf('sites/%d/articles/%d/override', $message->getSiteId(), $message->getArticleId());

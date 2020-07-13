@@ -1,12 +1,13 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Yproximite\Api\Message\Article;
 
-use Yproximite\Api\Util\Helper;
-use Yproximite\Api\Model\Article\Article;
 use Yproximite\Api\Message\MessageInterface;
 use Yproximite\Api\Message\SiteAwareMessageTrait;
+use Yproximite\Api\Model\Article\Article;
+use Yproximite\Api\Util\Helper;
 
 /**
  * Class AbstractArticleMessage
@@ -53,17 +54,11 @@ abstract class AbstractArticleMessage implements MessageInterface
         return $this->translations;
     }
 
-    /**
-     * @param ArticleTranslationMessage $translation
-     */
     public function addTranslation(ArticleTranslationMessage $translation)
     {
         $this->translations[] = $translation;
     }
 
-    /**
-     * @param ArticleTranslationMessage $translation
-     */
     public function removeTranslation(ArticleTranslationMessage $translation)
     {
         array_splice($this->translations, array_search($translation, $this->translations), 1);
@@ -72,16 +67,13 @@ abstract class AbstractArticleMessage implements MessageInterface
     /**
      * @see Article::getStatuses()
      *
-     * @return null|string
+     * @return string|null
      */
     public function getStatus()
     {
         return $this->status;
     }
 
-    /**
-     * @param null|string $status
-     */
     public function setStatus(string $status = null)
     {
         $this->status = $status;
@@ -111,17 +103,11 @@ abstract class AbstractArticleMessage implements MessageInterface
         return $this->medias;
     }
 
-    /**
-     * @param ArticleMediaMessage $media
-     */
     public function addMedia(ArticleMediaMessage $media)
     {
         $this->medias[] = $media;
     }
 
-    /**
-     * @param ArticleMediaMessage $media
-     */
     public function removeMedia(ArticleMediaMessage $media)
     {
         array_splice($this->medias, array_search($media, $this->medias), 1);
@@ -135,9 +121,6 @@ abstract class AbstractArticleMessage implements MessageInterface
         return $this->mediaLimit;
     }
 
-    /**
-     * @param int|null $mediaLimit
-     */
     public function setMediaLimit(int $mediaLimit = null)
     {
         $this->mediaLimit = $mediaLimit;
@@ -151,9 +134,6 @@ abstract class AbstractArticleMessage implements MessageInterface
         return $this->shareOnFacebook;
     }
 
-    /**
-     * @param bool|null $shareOnFacebook
-     */
     public function setShareOnFacebook(bool $shareOnFacebook = null)
     {
         $this->shareOnFacebook = $shareOnFacebook;

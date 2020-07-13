@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Yproximite\Api\Model\Site;
@@ -22,8 +23,6 @@ class SiteRoute implements ModelInterface
 
     /**
      * SiteRoute constructor.
-     *
-     * @param array $data
      */
     public function __construct(array $data)
     {
@@ -31,17 +30,11 @@ class SiteRoute implements ModelInterface
         $this->path   = (string) $data['path'];
     }
 
-    /**
-     * @return string
-     */
     public function getLocale(): string
     {
         return $this->locale;
     }
 
-    /**
-     * @return string
-     */
     public function getPath(): string
     {
         return $this->path;

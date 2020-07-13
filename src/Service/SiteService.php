@@ -1,12 +1,13 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Yproximite\Api\Service;
 
-use Yproximite\Api\Model\Site\Site;
-use Yproximite\Api\Message\Site\SitePostMessage;
-use Yproximite\Api\Message\Site\SitePatchMessage;
 use Yproximite\Api\Message\Site\PlatformChildrenListMessage;
+use Yproximite\Api\Message\Site\SitePatchMessage;
+use Yproximite\Api\Message\Site\SitePostMessage;
+use Yproximite\Api\Model\Site\Site;
 
 /**
  * Class SiteService
@@ -28,11 +29,6 @@ class SiteService extends AbstractService implements ServiceInterface
         return $models;
     }
 
-    /**
-     * @param int $id
-     *
-     * @return Site
-     */
     public function getSite(int $id): Site
     {
         $path = sprintf('sites/%d', $id);
@@ -45,11 +41,6 @@ class SiteService extends AbstractService implements ServiceInterface
         return $model;
     }
 
-    /**
-     * @param SitePostMessage $message
-     *
-     * @return Site
-     */
     public function postSite(SitePostMessage $message): Site
     {
         $path = 'sites';
@@ -63,11 +54,6 @@ class SiteService extends AbstractService implements ServiceInterface
         return $model;
     }
 
-    /**
-     * @param SitePatchMessage $message
-     *
-     * @return Site
-     */
     public function patchSite(SitePatchMessage $message): Site
     {
         $path = sprintf('sites/%d', $message->getId());
@@ -81,9 +67,6 @@ class SiteService extends AbstractService implements ServiceInterface
         return $model;
     }
 
-    /**
-     * @param int $id
-     */
     public function deleteSite(int $id)
     {
         $path = sprintf('sites/%d', $id);
@@ -92,8 +75,6 @@ class SiteService extends AbstractService implements ServiceInterface
     }
 
     /**
-     * @param PlatformChildrenListMessage $message
-     *
      * @return Site[]
      */
     public function getPlatformChildren(PlatformChildrenListMessage $message): array

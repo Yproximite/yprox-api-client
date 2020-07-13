@@ -1,22 +1,18 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Yproximite\Api\Service;
 
-use Yproximite\Api\Model\TeamWorker\TeamWorker;
 use Yproximite\Api\Message\TeamWorker\TeamWorkerPatchMessage;
 use Yproximite\Api\Message\TeamWorker\TeamWorkerPostMessage;
+use Yproximite\Api\Model\TeamWorker\TeamWorker;
 
 /**
  * Class TeamWorkerService
  */
 class TeamWorkerService extends AbstractService implements ServiceInterface
 {
-    /**
-     * @param TeamWorkerPostMessage $message
-     *
-     * @return TeamWorker
-     */
     public function postTeamWorker(TeamWorkerPostMessage $message): TeamWorker
     {
         $path = sprintf('sites/%d/teams/workers', $message->getSiteId());
@@ -30,11 +26,6 @@ class TeamWorkerService extends AbstractService implements ServiceInterface
         return $model;
     }
 
-    /**
-     * @param TeamWorkerPatchMessage $message
-     *
-     * @return TeamWorker
-     */
     public function patchTeamWorker(TeamWorkerPatchMessage $message): TeamWorker
     {
         $path = sprintf('sites/%d/teams/%d/worker', $message->getSiteId(), $message->getId());

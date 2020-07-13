@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Yproximite\Api\Message\Article;
@@ -18,17 +19,11 @@ class CategoryArticleListMessage implements MessageInterface
      */
     private $categoryId;
 
-    /**
-     * @return int
-     */
     public function getCategoryId(): int
     {
         return $this->categoryId;
     }
 
-    /**
-     * @param int $categoryId
-     */
     public function setCategoryId(int $categoryId)
     {
         $this->categoryId = $categoryId;

@@ -1,10 +1,11 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Yproximite\Api\Message\Field;
 
-use Yproximite\Api\Model\Field\Field;
 use Yproximite\Api\Message\IdentityAwareMessageTrait;
+use Yproximite\Api\Model\Field\Field;
 
 /**
  * Class FieldPatchMessage
@@ -13,11 +14,6 @@ class FieldPatchMessage extends AbstractFieldMessage
 {
     use IdentityAwareMessageTrait;
 
-    /**
-     * @param Field $field
-     *
-     * @return self
-     */
     public static function createFromField(Field $field): self
     {
         $message = new self();

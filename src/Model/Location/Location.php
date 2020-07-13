@@ -1,10 +1,11 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Yproximite\Api\Model\Location;
 
-use Yproximite\Api\Model\ModelInterface;
 use Yproximite\Api\Model\Inheritance\InheritanceStatuses;
+use Yproximite\Api\Model\ModelInterface;
 
 /**
  * Class Location
@@ -83,8 +84,6 @@ class Location implements ModelInterface
 
     /**
      * Location constructor.
-     *
-     * @param array $data
      */
     public function __construct(array $data)
     {
@@ -108,89 +107,59 @@ class Location implements ModelInterface
         $this->inheritanceStatus = (string) $data['inheritance_status'];
     }
 
-    /**
-     * @return int
-     */
     public function getId(): int
     {
         return $this->id;
     }
 
-    /**
-     * @return string
-     */
     public function getTel(): string
     {
         return $this->tel;
     }
 
     /**
-     * @return null|string
+     * @return string|null
      */
     public function getFax()
     {
         return $this->fax;
     }
 
-    /**
-     * @return string
-     */
     public function getMail(): string
     {
         return $this->mail;
     }
 
-    /**
-     * @return string
-     */
     public function getAddress(): string
     {
         return $this->address;
     }
 
-    /**
-     * @return string
-     */
     public function getPostalCode(): string
     {
         return $this->postalCode;
     }
 
-    /**
-     * @return string
-     */
     public function getTown(): string
     {
         return $this->town;
     }
 
-    /**
-     * @return string
-     */
     public function getLatitude(): string
     {
         return $this->latitude;
     }
 
-    /**
-     * @return string
-     */
     public function getLongitude(): string
     {
         return $this->longitude;
     }
 
-    /**
-     * @return string
-     */
     public function getCountry(): string
     {
         return $this->country;
     }
 
-    /**
-     * @return bool
-     */
     public function isDefaultLocation(): bool
     {
         return $this->defaultLocation;
@@ -214,8 +183,6 @@ class Location implements ModelInterface
 
     /**
      * @see InheritanceStatuses::getValues()
-     *
-     * @return string
      */
     public function getInheritanceStatus(): string
     {

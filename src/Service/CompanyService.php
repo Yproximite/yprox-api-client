@@ -1,22 +1,18 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Yproximite\Api\Service;
 
-use Yproximite\Api\Model\Company\Company;
-use Yproximite\Api\Message\Company\CompanyPostMessage;
 use Yproximite\Api\Message\Company\CompanyPatchMessage;
+use Yproximite\Api\Message\Company\CompanyPostMessage;
+use Yproximite\Api\Model\Company\Company;
 
 /**
  * Class CompanyService
  */
 class CompanyService extends AbstractService implements ServiceInterface
 {
-    /**
-     * @param CompanyPostMessage $message
-     *
-     * @return Company
-     */
     public function postCompany(CompanyPostMessage $message): Company
     {
         $path = 'companies';
@@ -30,11 +26,6 @@ class CompanyService extends AbstractService implements ServiceInterface
         return $model;
     }
 
-    /**
-     * @param CompanyPatchMessage $message
-     *
-     * @return Company
-     */
     public function patchCompany(CompanyPatchMessage $message): Company
     {
         $path = sprintf('companies/%d', $message->getId());

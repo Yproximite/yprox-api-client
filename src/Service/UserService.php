@@ -1,22 +1,18 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Yproximite\Api\Service;
 
-use Yproximite\Api\Model\User\User;
-use Yproximite\Api\Message\User\UserPostMessage;
 use Yproximite\Api\Message\User\UserPatchMessage;
+use Yproximite\Api\Message\User\UserPostMessage;
+use Yproximite\Api\Model\User\User;
 
 /**
  * Class UserService
  */
 class UserService extends AbstractService implements ServiceInterface
 {
-    /**
-     * @param UserPostMessage $message
-     *
-     * @return User
-     */
     public function postUser(UserPostMessage $message): User
     {
         $path = sprintf('companies/%d/users', $message->getCompanyId());
@@ -30,11 +26,6 @@ class UserService extends AbstractService implements ServiceInterface
         return $model;
     }
 
-    /**
-     * @param UserPatchMessage $message
-     *
-     * @return User
-     */
     public function patchUser(UserPatchMessage $message): User
     {
         $path = sprintf('companies/%d/users/%d', $message->getCompanyId(), $message->getId());

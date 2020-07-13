@@ -1,22 +1,18 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Yproximite\Api\Service;
 
-use Yproximite\Api\Model\CallTracking\CallTracking;
 use Yproximite\Api\Message\CallTracking\CallTrackingPatchMessage;
 use Yproximite\Api\Message\CallTracking\CallTrackingPostMessage;
+use Yproximite\Api\Model\CallTracking\CallTracking;
 
 /**
  * Class CallTrackingService
  */
 class CallTrackingService extends AbstractService implements ServiceInterface
 {
-    /**
-     * @param CallTrackingPostMessage $message
-     *
-     * @return CallTracking
-     */
     public function postCallTracking(CallTrackingPostMessage $message): CallTracking
     {
         $path = sprintf('sites/%d/call_trackings', $message->getSiteId());
@@ -30,11 +26,6 @@ class CallTrackingService extends AbstractService implements ServiceInterface
         return $model;
     }
 
-    /**
-     * @param CallTrackingPatchMessage $message
-     *
-     * @return CallTracking
-     */
     public function patchCallTracking(CallTrackingPatchMessage $message): CallTracking
     {
         $path = sprintf('sites/%d/call_trackings/update', $message->getSiteId());

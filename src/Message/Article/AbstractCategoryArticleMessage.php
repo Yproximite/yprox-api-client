@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Yproximite\Api\Message\Article;
@@ -23,17 +24,11 @@ abstract class AbstractCategoryArticleMessage implements MessageInterface
      */
     private $articleIds = [];
 
-    /**
-     * @return int
-     */
     public function getCategoryId(): int
     {
         return $this->categoryId;
     }
 
-    /**
-     * @param int $categoryId
-     */
     public function setCategoryId(int $categoryId)
     {
         $this->categoryId = $categoryId;

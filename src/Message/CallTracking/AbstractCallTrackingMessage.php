@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Yproximite\Api\Message\CallTracking;
@@ -33,65 +34,44 @@ abstract class AbstractCallTrackingMessage implements MessageInterface
      */
     private $callerId;
 
-    /**
-     * @return string
-     */
     public function getName(): string
     {
         return $this->name;
     }
 
-    /**
-     * @param string $name
-     */
     public function setName(string $name)
     {
         $this->name = $name;
     }
 
     /**
-     * @return null|string
+     * @return string|null
      */
     public function getPhoneDid()
     {
         return $this->phoneDid;
     }
 
-    /**
-     * @param null|string $phoneDid
-     */
     public function setPhoneDid(string $phoneDid = null)
     {
         $this->phoneDid = $phoneDid;
     }
 
-    /**
-     * @return string
-     */
     public function getPhoneDestination(): string
     {
         return $this->phoneDestination;
     }
 
-    /**
-     * @param string $phoneDestination
-     */
     public function setPhoneDestination(string $phoneDestination)
     {
         $this->phoneDestination = $phoneDestination;
     }
 
-    /**
-     * @return boolean
-     */
     public function hasCallerId(): bool
     {
         return $this->callerId;
     }
 
-    /**
-     * @param boolean $callerId
-     */
     public function setCallerId(bool $callerId)
     {
         $this->callerId = $callerId;

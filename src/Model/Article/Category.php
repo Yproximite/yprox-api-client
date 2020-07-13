@@ -1,10 +1,11 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Yproximite\Api\Model\Article;
 
-use Yproximite\Api\Model\ModelInterface;
 use Yproximite\Api\Model\Inheritance\InheritanceStatuses;
+use Yproximite\Api\Model\ModelInterface;
 
 /**
  * Class Category
@@ -53,8 +54,6 @@ class Category implements ModelInterface
 
     /**
      * Category constructor.
-     *
-     * @param array $data
      */
     public function __construct(array $data)
     {
@@ -110,8 +109,6 @@ class Category implements ModelInterface
 
     /**
      * @see InheritanceStatuses::getValues()
-     *
-     * @return string
      */
     public function getInheritanceStatus(): string
     {

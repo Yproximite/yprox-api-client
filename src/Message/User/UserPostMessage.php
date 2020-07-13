@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Yproximite\Api\Message\User;
@@ -15,7 +16,7 @@ class UserPostMessage extends AbstractUserMessage
      */
     public function build()
     {
-        if (is_null($this->getPlainPassword())) {
+        if (\is_null($this->getPlainPassword())) {
             throw new LogicException('The plain password should be not null.');
         }
 

@@ -1,11 +1,12 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Yproximite\Api\Message\Article;
 
+use Yproximite\Api\Message\IdentityAwareMessageTrait;
 use Yproximite\Api\Model\Article\Article;
 use Yproximite\Api\Model\Article\Category;
-use Yproximite\Api\Message\IdentityAwareMessageTrait;
 
 /**
  * Class ArticlePatchMessage
@@ -14,11 +15,6 @@ class ArticlePatchMessage extends AbstractArticleMessage
 {
     use IdentityAwareMessageTrait;
 
-    /**
-     * @param Article $article
-     *
-     * @return self
-     */
     public static function createFromArticle(Article $article): self
     {
         $message = new self();

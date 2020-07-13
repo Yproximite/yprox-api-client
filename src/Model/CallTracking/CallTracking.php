@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Yproximite\Api\Model\CallTracking;
@@ -37,8 +38,6 @@ class CallTracking implements ModelInterface
 
     /**
      * CallTracking constructor.
-     *
-     * @param array $data
      */
     public function __construct(array $data)
     {
@@ -49,41 +48,26 @@ class CallTracking implements ModelInterface
         $this->callerId         = (bool) $data['callerId'];
     }
 
-    /**
-     * @return int
-     */
     public function getId(): int
     {
         return $this->id;
     }
 
-    /**
-     * @return string
-     */
     public function getName(): string
     {
         return $this->name;
     }
 
-    /**
-     * @return string
-     */
     public function getPhoneDid(): string
     {
         return $this->phoneDid;
     }
 
-    /**
-     * @return string
-     */
     public function getPhoneDestination(): string
     {
         return $this->phoneDestination;
     }
 
-    /**
-     * @return boolean
-     */
     public function hasCallerId(): bool
     {
         return $this->callerId;

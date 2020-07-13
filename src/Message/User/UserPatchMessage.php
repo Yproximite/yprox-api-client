@@ -1,10 +1,11 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Yproximite\Api\Message\User;
 
-use Yproximite\Api\Model\User\User;
 use Yproximite\Api\Message\IdentityAwareMessageTrait;
+use Yproximite\Api\Model\User\User;
 
 /**
  * Class UserPatchMessage
@@ -13,11 +14,6 @@ class UserPatchMessage extends AbstractUserMessage
 {
     use IdentityAwareMessageTrait;
 
-    /**
-     * @param User $user
-     *
-     * @return self
-     */
     public static function createFromUser(User $user): self
     {
         $message = new self();

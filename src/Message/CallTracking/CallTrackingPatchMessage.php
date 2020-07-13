@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Yproximite\Api\Message\CallTracking;
@@ -13,11 +14,6 @@ class CallTrackingPatchMessage extends AbstractCallTrackingMessage
 {
     use IdentityAwareMessageTrait;
 
-    /**
-     * @param CallTracking $callTracking
-     *
-     * @return self
-     */
     public static function createFromCallTracking(CallTracking $callTracking): self
     {
         $message = new self();
@@ -36,7 +32,7 @@ class CallTrackingPatchMessage extends AbstractCallTrackingMessage
     public function build()
     {
         return [
-            'callerId' => intval($this->hasCallerId()),
+            'callerId' => \intval($this->hasCallerId()),
         ];
     }
 }

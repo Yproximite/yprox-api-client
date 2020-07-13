@@ -6,8 +6,6 @@ namespace Yproximite\Api\Util;
 
 /**
  * Class RequestStatus
- *
- * @package Yproximite\Api\Util
  */
 class RequestStatus
 {

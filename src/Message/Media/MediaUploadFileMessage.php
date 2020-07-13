@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Yproximite\Api\Message\Media;
@@ -22,16 +23,13 @@ class MediaUploadFileMessage implements MessageInterface
     private $resource;
 
     /**
-     * @return null|string
+     * @return string|null
      */
     public function getFilename()
     {
         return $this->filename;
     }
 
-    /**
-     * @param null|string $filename
-     */
     public function setFilename(string $filename = null)
     {
         $this->filename = $filename;

@@ -1,11 +1,12 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Yproximite\Api\Message\Field;
 
-use Yproximite\Api\Util\Helper;
 use Yproximite\Api\Message\MessageInterface;
 use Yproximite\Api\Message\SiteAwareMessageTrait;
+use Yproximite\Api\Util\Helper;
 
 /**
  * Class AbstractFieldMessage
@@ -29,33 +30,21 @@ abstract class AbstractFieldMessage implements MessageInterface
      */
     private $translations = [];
 
-    /**
-     * @return string
-     */
     public function getToken(): string
     {
         return $this->token;
     }
 
-    /**
-     * @param string $token
-     */
     public function setToken(string $token)
     {
         $this->token = $token;
     }
 
-    /**
-     * @return string
-     */
     public function getDescription(): string
     {
         return $this->description;
     }
 
-    /**
-     * @param string $description
-     */
     public function setDescription(string $description)
     {
         $this->description = $description;
@@ -69,17 +58,11 @@ abstract class AbstractFieldMessage implements MessageInterface
         return $this->translations;
     }
 
-    /**
-     * @param FieldTranslationMessage $translation
-     */
     public function addTranslation(FieldTranslationMessage $translation)
     {
         $this->translations[] = $translation;
     }
 
-    /**
-     * @param FieldTranslationMessage $translation
-     */
     public function removeTranslation(FieldTranslationMessage $translation)
     {
         array_splice($this->translations, array_search($translation, $this->translations), 1);

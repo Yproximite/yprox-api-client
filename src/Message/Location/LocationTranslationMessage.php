@@ -1,10 +1,11 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Yproximite\Api\Message\Location;
 
-use Yproximite\Api\Message\MessageInterface;
 use Yproximite\Api\Message\LocaleAwareMessageTrait;
+use Yproximite\Api\Message\MessageInterface;
 use Yproximite\Api\Model\Location\LocationTranslation;
 
 /**
@@ -24,11 +25,6 @@ class LocationTranslationMessage implements MessageInterface
      */
     private $openingHours;
 
-    /**
-     * @param LocationTranslation $translation
-     *
-     * @return self
-     */
     public static function createFromLocationTranslation(LocationTranslation $translation): self
     {
         $message = new self();
@@ -39,24 +35,18 @@ class LocationTranslationMessage implements MessageInterface
         return $message;
     }
 
-    /**
-     * @return string
-     */
     public function getTitle(): string
     {
         return $this->title;
     }
 
-    /**
-     * @param string $title
-     */
     public function setTitle(string $title)
     {
         $this->title = $title;
     }
 
     /**
-     * @return null|string
+     * @return string|null
      */
     public function getOpeningHours()
     {
@@ -64,7 +54,7 @@ class LocationTranslationMessage implements MessageInterface
     }
 
     /**
-     * @param null|string $openingHours
+     * @param string|null $openingHours
      */
     public function setOpeningHours($openingHours)
     {

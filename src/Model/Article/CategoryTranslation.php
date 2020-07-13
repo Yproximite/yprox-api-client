@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Yproximite\Api\Model\Article;
@@ -27,8 +28,6 @@ class CategoryTranslation implements ModelInterface
 
     /**
      * CategoryTranslation constructor.
-     *
-     * @param array $data
      */
     public function __construct(array $data)
     {
@@ -37,24 +36,18 @@ class CategoryTranslation implements ModelInterface
         $this->description = !empty($data['description']) ? (string) $data['description'] : null;
     }
 
-    /**
-     * @return string
-     */
     public function getLocale(): string
     {
         return $this->locale;
     }
 
-    /**
-     * @return string
-     */
     public function getTitle(): string
     {
         return $this->title;
     }
 
     /**
-     * @return null|string
+     * @return string|null
      */
     public function getDescription()
     {

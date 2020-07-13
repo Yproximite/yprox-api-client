@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Yproximite\Api\Model\Field;
@@ -52,8 +53,6 @@ class Field implements ModelInterface
 
     /**
      * Field constructor.
-     *
-     * @param array $data
      */
     public function __construct(array $data)
     {
@@ -71,25 +70,16 @@ class Field implements ModelInterface
         $this->inheritanceStatus = (string) $data['inheritance_status'];
     }
 
-    /**
-     * @return int
-     */
     public function getId(): int
     {
         return $this->id;
     }
 
-    /**
-     * @return string
-     */
     public function getToken(): string
     {
         return $this->token;
     }
 
-    /**
-     * @return string
-     */
     public function getDescription(): string
     {
         return $this->description;
@@ -111,25 +101,16 @@ class Field implements ModelInterface
         return $this->dataParentId;
     }
 
-    /**
-     * @return \DateTime
-     */
     public function getCreatedAt(): \DateTime
     {
         return $this->createdAt;
     }
 
-    /**
-     * @return \DateTime
-     */
     public function getUpdatedAt(): \DateTime
     {
         return $this->updatedAt;
     }
 
-    /**
-     * @return string
-     */
     public function getInheritanceStatus(): string
     {
         return $this->inheritanceStatus;

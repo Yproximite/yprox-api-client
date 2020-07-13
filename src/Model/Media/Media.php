@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Yproximite\Api\Model\Media;
@@ -87,8 +88,6 @@ class Media implements ModelInterface
 
     /**
      * Media constructor.
-     *
-     * @param array $data
      */
     public function __construct(array $data)
     {
@@ -109,40 +108,28 @@ class Media implements ModelInterface
         $this->linkUrl                 = !empty($data['link_url']) ? (string) $data['link_url'] : null;
     }
 
-    /**
-     * @return int
-     */
     public function getId(): int
     {
         return $this->id;
     }
 
-    /**
-     * @return string
-     */
     public function getFilename(): string
     {
         return $this->filename;
     }
 
-    /**
-     * @return string
-     */
     public function getOriginalFilename(): string
     {
         return $this->originalFilename;
     }
 
-    /**
-     * @return string
-     */
     public function getOriginalFilenameSlugged(): string
     {
         return $this->originalFilenameSlugged;
     }
 
     /**
-     * @return null|string
+     * @return string|null
      */
     public function getDescription()
     {
@@ -150,64 +137,43 @@ class Media implements ModelInterface
     }
 
     /**
-     * @return null|string
+     * @return string|null
      */
     public function getTitle()
     {
         return $this->title;
     }
 
-    /**
-     * @return bool
-     */
     public function isVisible(): bool
     {
         return $this->visible;
     }
 
-    /**
-     * @return \DateTime
-     */
     public function getCreatedAt(): \DateTime
     {
         return $this->createdAt;
     }
 
-    /**
-     * @return \DateTime
-     */
     public function getUpdatedAt(): \DateTime
     {
         return $this->updatedAt;
     }
 
-    /**
-     * @return string
-     */
     public function getMime(): string
     {
         return $this->mime;
     }
 
-    /**
-     * @return string
-     */
     public function getType(): string
     {
         return $this->type;
     }
 
-    /**
-     * @return int
-     */
     public function getSize(): int
     {
         return $this->size;
     }
 
-    /**
-     * @return string
-     */
     public function getExtension(): string
     {
         return $this->extension;
@@ -222,7 +188,7 @@ class Media implements ModelInterface
     }
 
     /**
-     * @return null|string
+     * @return string|null
      */
     public function getLinkUrl()
     {

@@ -1,22 +1,18 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Yproximite\Api\Service;
 
-use Yproximite\Api\Model\Media\Media;
-use Yproximite\Api\Message\Media\MediaUploadMessage;
 use Yproximite\Api\Message\Media\MediaDynamicUrlMessage;
+use Yproximite\Api\Message\Media\MediaUploadMessage;
+use Yproximite\Api\Model\Media\Media;
 
 /**
  * Class MediaService
  */
 class MediaService extends AbstractService implements ServiceInterface
 {
-    /**
-     * @param MediaDynamicUrlMessage $message
-     *
-     * @return string
-     */
     public function getMediaDynamicUrl(MediaDynamicUrlMessage $message): string
     {
         $path = sprintf(
@@ -32,8 +28,6 @@ class MediaService extends AbstractService implements ServiceInterface
     }
 
     /**
-     * @param MediaUploadMessage $message
-     *
      * @return Media[]
      */
     public function uploadMedias(MediaUploadMessage $message): array

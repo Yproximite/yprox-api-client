@@ -1,11 +1,12 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Yproximite\Api\Message\Field;
 
+use Yproximite\Api\Message\LocaleAwareMessageTrait;
 use Yproximite\Api\Message\MessageInterface;
 use Yproximite\Api\Model\Field\FieldTranslation;
-use Yproximite\Api\Message\LocaleAwareMessageTrait;
 
 /**
  * Class FieldTranslationMessage
@@ -19,11 +20,6 @@ class FieldTranslationMessage implements MessageInterface
      */
     private $value;
 
-    /**
-     * @param FieldTranslation $translation
-     *
-     * @return self
-     */
     public static function createFromFieldTranslation(FieldTranslation $translation): self
     {
         $message = new self();
@@ -33,17 +29,11 @@ class FieldTranslationMessage implements MessageInterface
         return $message;
     }
 
-    /**
-     * @return string
-     */
     public function getValue(): string
     {
         return $this->value;
     }
 
-    /**
-     * @param string $value
-     */
     public function setValue(string $value)
     {
         $this->value = $value;

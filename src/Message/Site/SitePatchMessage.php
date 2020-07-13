@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Yproximite\Api\Message\Site;
@@ -23,11 +24,6 @@ class SitePatchMessage extends AbstractSiteMessage
         ];
     }
 
-    /**
-     * @param Site $site
-     *
-     * @return self
-     */
     public static function createFromSite(Site $site): self
     {
         $message = new self();
